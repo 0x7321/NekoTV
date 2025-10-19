@@ -64,6 +64,13 @@ function HomeClient() {
   const [showAIRecommendModal, setShowAIRecommendModal] = useState(false);
   const [aiEnabled, setAiEnabled] = useState<boolean | null>(true); // 默认显示，检查后再决定
 
+  // 发现页面 - 榜单数据
+  const [discoverData, setDiscoverData] = useState<{
+    sections: any[];
+    ranks: any[];
+  } | null>(null);
+  const [discoverLoading, setDiscoverLoading] = useState(false);
+
   // 获取用户名
   useEffect(() => {
     const authInfo = getAuthInfoFromBrowserCookie();
@@ -260,6 +267,33 @@ function HomeClient() {
     setFavoriteItems(sorted);
   };
 
+  // 当切换到发现页面时加载榜单数据
+  useEffect(() => {
+    if (activeTab !== 'discover') return;
+    if (discoverData) return; // 已经加载过了
+
+    const loadDiscoverData = async () => {
+      setDiscoverLoading(true);
+      try {
+        const response = await fetch('/api/discover/index');
+        const result = await response.json();
+
+        if (result.success && result.data) {
+          setDiscoverData({
+            sections: result.data.section || [],
+            ranks: result.data.rank || [],
+          });
+        }
+      } catch (error) {
+        console.error('加载榜单数据失败:', error);
+      } finally {
+        setDiscoverLoading(false);
+      }
+    };
+
+    loadDiscoverData();
+  }, [activeTab, discoverData]);
+
   // 当切换到收藏夹时加载收藏数据
   useEffect(() => {
     if (activeTab !== 'favorites') return;
@@ -372,88 +406,89 @@ function HomeClient() {
           {activeTab === 'discover' ? (
             // 发现页面 - 全球榜单
             <div className='explore-page'>
-              {/* 全球专区榜单 */}
-              <div className='ranking-area mb-12'>
-                <div className='ranking-section'>
-                  <div className='ranking-header mb-4'>
-                    <h1 className='text-2xl sm:text-3xl font-bold text-gray-800 dark:text-gray-200'>
-                      全球专区榜单
-                    </h1>
-                  </div>
-                  <div className='ranking-content'>
-                    <div className='flex gap-4 overflow-x-auto pb-3 scrollbar-thin scrollbar-thumb-gray-300 dark:scrollbar-thumb-gray-600 scrollbar-track-transparent'>
-                      {/* 示例数据 - 后续从API获取 */}
-                      <PlatformCard
-                        backgroundImage='https://via.placeholder.com/400x300/1a1a1a/ffffff?text=Netflix'
-                        topItems={[
-                          {
-                            title: '示例影片 1',
-                            poster:
-                              'https://via.placeholder.com/200x300/333/fff?text=1',
-                          },
-                          {
-                            title: '示例影片 2',
-                            poster:
-                              'https://via.placeholder.com/200x300/333/fff?text=2',
-                          },
-                          {
-                            title: '示例影片 3',
-                            poster:
-                              'https://via.placeholder.com/200x300/333/fff?text=3',
-                          },
-                        ]}
-                      />
-                      <div className='text-center flex items-center justify-center min-w-[340px] h-[300px] border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-[18px]'>
-                        <p className='text-gray-500 dark:text-gray-400'>
-                          数据加载中...
-                        </p>
+              {discoverLoading ? (
+                <div className='text-center py-20'>
+                  <div className='inline-block animate-spin rounded-full h-12 w-12 border-4 border-gray-300 border-t-emerald-500'></div>
+                  <p className='mt-4 text-gray-500 dark:text-gray-400'>
+                    加载榜单数据中...
+                  </p>
+                </div>
+              ) : discoverData ? (
+                <>
+                  {/* 全球专区榜单 */}
+                  {discoverData.sections.length > 0 && (
+                    <div className='ranking-area mb-12'>
+                      <div className='ranking-section'>
+                        <div className='ranking-header mb-4'>
+                          <h1 className='text-2xl sm:text-3xl font-bold text-gray-800 dark:text-gray-200'>
+                            全球专区榜单
+                          </h1>
+                        </div>
+                        <div className='ranking-content'>
+                          <div className='flex gap-4 overflow-x-auto pb-3 scrollbar-thin scrollbar-thumb-gray-300 dark:scrollbar-thumb-gray-600 scrollbar-track-transparent'>
+                            {discoverData.sections.map((section: any) =>
+                              section.list.map((item: any) => (
+                                <PlatformCard
+                                  key={item.cate_id}
+                                  backgroundImage={item.pic}
+                                  topItems={
+                                    item.list_vod
+                                      ?.slice(0, 3)
+                                      .map((vod: any) => ({
+                                        title: vod.name,
+                                        poster: vod.vod_pic,
+                                      })) || []
+                                  }
+                                />
+                              ))
+                            )}
+                          </div>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </div>
-              </div>
+                  )}
 
-              {/* 全球热播榜单 */}
-              <div className='ranking-area'>
-                <div className='ranking-section'>
-                  <div className='ranking-header mb-4'>
-                    <h1 className='text-2xl sm:text-3xl font-bold text-gray-800 dark:text-gray-200'>
-                      全球热播榜单
-                    </h1>
-                  </div>
-                  <div className='ranking-content'>
-                    <div className='flex gap-4 overflow-x-auto pb-3 scrollbar-thin scrollbar-thumb-gray-300 dark:scrollbar-thumb-gray-600 scrollbar-track-transparent'>
-                      {/* 示例数据 - 后续从API获取 */}
-                      <RankingCard
-                        title='本周国剧排行榜'
-                        backgroundImage='https://via.placeholder.com/400x300/2a2a2a/ffffff?text=CN+Drama'
-                        topItems={[
-                          {
-                            title: '示例剧集 1',
-                            poster:
-                              'https://via.placeholder.com/200x300/444/fff?text=1',
-                          },
-                          {
-                            title: '示例剧集 2',
-                            poster:
-                              'https://via.placeholder.com/200x300/444/fff?text=2',
-                          },
-                          {
-                            title: '示例剧集 3',
-                            poster:
-                              'https://via.placeholder.com/200x300/444/fff?text=3',
-                          },
-                        ]}
-                      />
-                      <div className='text-center flex items-center justify-center min-w-[340px] min-h-[300px] border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-[18px]'>
-                        <p className='text-gray-500 dark:text-gray-400'>
-                          数据加载中...
-                        </p>
+                  {/* 全球热播榜单 */}
+                  {discoverData.ranks.length > 0 && (
+                    <div className='ranking-area'>
+                      <div className='ranking-section'>
+                        <div className='ranking-header mb-4'>
+                          <h1 className='text-2xl sm:text-3xl font-bold text-gray-800 dark:text-gray-200'>
+                            全球热播榜单
+                          </h1>
+                        </div>
+                        <div className='ranking-content'>
+                          <div className='flex gap-4 overflow-x-auto pb-3 scrollbar-thin scrollbar-thumb-gray-300 dark:scrollbar-thumb-gray-600 scrollbar-track-transparent'>
+                            {discoverData.ranks.map((rank: any) =>
+                              rank.list.map((item: any) => (
+                                <RankingCard
+                                  key={item.cate_id}
+                                  title={item.name}
+                                  backgroundImage={item.pic}
+                                  topItems={
+                                    item.list_vod
+                                      ?.slice(0, 3)
+                                      .map((vod: any) => ({
+                                        title: vod.name,
+                                        poster: vod.vod_pic,
+                                      })) || []
+                                  }
+                                />
+                              ))
+                            )}
+                          </div>
+                        </div>
                       </div>
                     </div>
-                  </div>
+                  )}
+                </>
+              ) : (
+                <div className='text-center py-20'>
+                  <p className='text-gray-500 dark:text-gray-400'>
+                    暂无榜单数据
+                  </p>
                 </div>
-              </div>
+              )}
             </div>
           ) : activeTab === 'favorites' ? (
             // 收藏夹视图
