@@ -1,20 +1,17 @@
 'use client';
 
-import { useState, useEffect } from 'react';
 import { 
-  TrashIcon, 
   ArrowPathIcon,
   ChartBarIcon,
   ClockIcon,
-  ServerIcon,
   DocumentTextIcon,
+  ExclamationTriangleIcon,
   FilmIcon,
-  MagnifyingGlassIcon,
   FolderIcon,
-  VideoCameraIcon,
   PlayIcon,
-  ExclamationTriangleIcon
-} from '@heroicons/react/24/outline';
+  TrashIcon, 
+  VideoCameraIcon} from '@heroicons/react/24/outline';
+import { useEffect,useState } from 'react';
 
 interface CacheStats {
   douban: { count: number; size: number; types: Record<string, number> };
@@ -68,21 +65,21 @@ const CACHE_TYPES: CacheType[] = [
     name: 'TMDB数据',
     description: 'TMDB演员搜索、作品信息等数据缓存',
     icon: FilmIcon,
-    color: 'text-purple-600 bg-purple-100'
+    color: 'text-emerald-500 bg-emerald-100'
   },
   {
     key: 'danmu',
     name: '弹幕数据',
     description: '外部弹幕API获取的弹幕内容缓存',
     icon: DocumentTextIcon,
-    color: 'text-blue-600 bg-blue-100'
+    color: 'text-blue-500 bg-blue-100'
   },
   {
     key: 'netdisk',
     name: '网盘搜索',
     description: '网盘搜索结果缓存（百度、阿里、夸克等）',
     icon: FolderIcon,
-    color: 'text-purple-600 bg-purple-100'
+    color: 'text-emerald-500 bg-emerald-100'
   },
   {
     key: 'youtube',
@@ -184,7 +181,7 @@ export default function CacheManager() {
       {/* 标题和刷新按钮 */}
       <div className="flex items-center justify-between">
         <div className="flex items-center space-x-3">
-          <ChartBarIcon className="h-6 w-6 text-blue-600" />
+          <ChartBarIcon className="h-6 w-6 text-blue-500" />
           <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100">
             缓存管理
           </h2>
@@ -220,7 +217,7 @@ export default function CacheManager() {
 
       {/* 总览统计 */}
       {stats && (
-        <div className="bg-gradient-to-r from-blue-500 to-blue-600 rounded-lg p-6 text-white">
+        <div className="bg-gradient-to-r from-blue-400 to-blue-500 rounded-lg p-6 text-white">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div className="text-center">
               <div className="text-3xl font-bold">{stats.total.count}</div>
@@ -399,7 +396,7 @@ export default function CacheManager() {
       {/* 加载状态 */}
       {loading && !stats && (
         <div className="flex items-center justify-center py-12">
-          <ArrowPathIcon className="h-8 w-8 animate-spin text-blue-500 mr-3" />
+          <ArrowPathIcon className="h-8 w-8 animate-spin text-blue-400 mr-3" />
           <span className="text-gray-600 dark:text-gray-300">正在获取缓存统计...</span>
         </div>
       )}

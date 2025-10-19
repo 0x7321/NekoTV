@@ -2,9 +2,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 
 import { getAuthInfoFromCookie } from '@/lib/auth';
-import { getReleaseCalendar, getFilters } from '@/lib/release-calendar-scraper';
-import { ReleaseCalendarResult } from '@/lib/types';
 import { CalendarCacheManager } from '@/lib/calendar-cache';
+import { getFilters,getReleaseCalendar } from '@/lib/release-calendar-scraper';
+import { ReleaseCalendarResult } from '@/lib/types';
 
 export const runtime = 'nodejs';
 

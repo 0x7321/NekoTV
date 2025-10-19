@@ -6,13 +6,13 @@ import { Play, Star } from 'lucide-react';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 
-import { ShortDramaItem } from '@/lib/types';
 import {
-  SHORTDRAMA_CACHE_EXPIRE,
-  getCacheKey,
   getCache,
+  getCacheKey,
   setCache,
+  SHORTDRAMA_CACHE_EXPIRE,
 } from '@/lib/shortdrama-cache';
+import { ShortDramaItem } from '@/lib/types';
 
 interface ShortDramaCardProps {
   drama: ShortDramaItem;
@@ -131,7 +131,7 @@ export default function ShortDramaCard({
           </div>
 
           {/* 集数标识 - 玻璃态美化 */}
-          <div className="absolute top-2 left-2 rounded-full bg-gradient-to-br from-purple-500/90 via-pink-500/90 to-rose-500/90 backdrop-blur-md px-3 py-1.5 text-xs font-bold text-white shadow-lg ring-2 ring-white/30 transition-all duration-300 group-hover:scale-110 group-hover:shadow-purple-500/50">
+          <div className="absolute top-2 left-2 rounded-full bg-gradient-to-br from-emerald-400/90 via-teal-400/90 to-teal-500/90 backdrop-blur-md px-3 py-1.5 text-xs font-bold text-white shadow-lg ring-2 ring-white/30 transition-all duration-300 group-hover:scale-110 group-hover:shadow-emerald-400/50">
             <span className="flex items-center gap-1">
               <Play size={10} className="fill-current" />
               {realEpisodeCount}集
@@ -149,7 +149,7 @@ export default function ShortDramaCard({
 
         {/* 信息区域 */}
         <div className="mt-2 space-y-1.5">
-          <h3 className="text-sm font-semibold text-gray-900 dark:text-white line-clamp-2 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-blue-600 group-hover:to-purple-600 dark:group-hover:from-blue-400 dark:group-hover:to-purple-400 transition-all duration-300">
+          <h3 className="text-sm font-semibold text-gray-900 dark:text-white line-clamp-2 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-blue-500 group-hover:to-emerald-500 dark:group-hover:from-blue-400 dark:group-hover:to-emerald-400 transition-all duration-300">
             {drama.name}
           </h3>
 

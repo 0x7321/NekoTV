@@ -9,13 +9,12 @@ import {
   clearAllPlayRecords,
   getAllPlayRecords,
   subscribeToDataUpdates,
-  forceRefreshPlayRecordsCache,
 } from '@/lib/db.client';
 import {
+  type WatchingUpdate,
+  checkWatchingUpdates,
   getDetailedWatchingUpdates,
   subscribeToWatchingUpdatesEvent,
-  checkWatchingUpdates,
-  type WatchingUpdate,
 } from '@/lib/watching-updates';
 
 import ScrollableRow from '@/components/ScrollableRow';
@@ -252,7 +251,7 @@ export default function ContinueWatching({ className }: ContinueWatchingProps) {
                   </div>
                   {/* 新集数徽章 */}
                   {newEpisodesCount > 0 && (
-                    <div className='absolute -top-2 -right-2 bg-gradient-to-r from-red-500 to-pink-500 text-white text-xs px-2 py-1 rounded-full shadow-lg z-[502]'>
+                    <div className='absolute -top-2 -right-2 bg-gradient-to-r from-red-500 to-orange-500 text-white text-xs px-2 py-1 rounded-full shadow-lg z-[502]'>
                       +{newEpisodesCount}集
                     </div>
                   )}

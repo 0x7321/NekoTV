@@ -15,12 +15,12 @@
  */
 
 import { getAuthInfoFromBrowserCookie } from './auth';
-import { UserPlayStat, SkipSegment, EpisodeSkipConfig } from './types';
 import type { PlayRecord } from './types';
+import { EpisodeSkipConfig, UserPlayStat } from './types';
 import { forceClearWatchingUpdatesCache } from './watching-updates';
 
 // 重新导出类型以保持API兼容性
-export type { PlayRecord, SkipSegment, EpisodeSkipConfig } from './types';
+export type { EpisodeSkipConfig,PlayRecord, SkipSegment } from './types';
 
 // 全局错误触发函数
 function triggerGlobalError(message: string) {

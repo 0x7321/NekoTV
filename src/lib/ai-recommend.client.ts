@@ -226,19 +226,19 @@ export function formatAIResponseWithLinks(
     // 替换《片名》格式 - 只添加样式，不添加点击
     formatted = formatted.replace(
       new RegExp(`《${title.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}》`, 'g'),
-      `<span class="text-blue-600 dark:text-blue-400 font-medium">《${title}》</span>`
+      `<span class="text-blue-500 dark:text-blue-400 font-medium">《${title}》</span>`
     );
     
     // 替换"片名"格式
     formatted = formatted.replace(
       new RegExp(`"${title.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}"`, 'g'),
-      `<span class="text-blue-600 dark:text-blue-400 font-medium">"${title}"</span>`
+      `<span class="text-blue-500 dark:text-blue-400 font-medium">"${title}"</span>`
     );
     
     // 替换【片名】格式
     formatted = formatted.replace(
       new RegExp(`【${title.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}】`, 'g'),
-      `<span class="text-blue-600 dark:text-blue-400 font-medium">【${title}】</span>`
+      `<span class="text-blue-500 dark:text-blue-400 font-medium">【${title}】</span>`
     );
   });
   

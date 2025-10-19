@@ -201,7 +201,7 @@ export const VersionPanel: React.FC<VersionPanelProps> = ({
               v{entry.version}
             </h4>
             {isCurrentVersion && (
-              <span className='px-2 py-1 text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300 rounded-full'>
+              <span className='px-2 py-1 text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-200 rounded-full'>
                 当前版本
               </span>
             )}
@@ -241,7 +241,7 @@ export const VersionPanel: React.FC<VersionPanelProps> = ({
 
           {entry.changed.length > 0 && (
             <div>
-              <h5 className='text-sm font-medium text-blue-700 dark:text-blue-400 mb-2 flex items-center gap-1'>
+              <h5 className='text-sm font-medium text-blue-600 dark:text-blue-400 mb-2 flex items-center gap-1'>
                 <RefreshCw className='w-4 h-4' />
                 功能改进
               </h5>
@@ -251,7 +251,7 @@ export const VersionPanel: React.FC<VersionPanelProps> = ({
                     key={index}
                     className='text-sm text-gray-700 dark:text-gray-300 flex items-start gap-2'
                   >
-                    <span className='w-1.5 h-1.5 bg-blue-500 rounded-full mt-2 flex-shrink-0'></span>
+                    <span className='w-1.5 h-1.5 bg-blue-400 rounded-full mt-2 flex-shrink-0'></span>
                     {item}
                   </li>
                 ))}
@@ -261,7 +261,7 @@ export const VersionPanel: React.FC<VersionPanelProps> = ({
 
           {entry.fixed.length > 0 && (
             <div>
-              <h5 className='text-sm font-medium text-purple-700 dark:text-purple-400 mb-2 flex items-center gap-1'>
+              <h5 className='text-sm font-medium text-emerald-600 dark:text-emerald-400 mb-2 flex items-center gap-1'>
                 <Bug className='w-4 h-4' />
                 问题修复
               </h5>
@@ -271,7 +271,7 @@ export const VersionPanel: React.FC<VersionPanelProps> = ({
                     key={index}
                     className='text-sm text-gray-700 dark:text-gray-300 flex items-start gap-2'
                   >
-                    <span className='w-1.5 h-1.5 bg-purple-500 rounded-full mt-2 flex-shrink-0'></span>
+                    <span className='w-1.5 h-1.5 bg-emerald-400 rounded-full mt-2 flex-shrink-0'></span>
                     {item}
                   </li>
                 ))}
@@ -487,7 +487,7 @@ export const VersionPanel: React.FC<VersionPanelProps> = ({
 
                           {entry.changed && entry.changed.length > 0 && (
                             <div className='mb-3'>
-                              <h5 className='text-sm font-medium text-blue-600 dark:text-blue-400 mb-2 flex items-center gap-1'>
+                              <h5 className='text-sm font-medium text-blue-500 dark:text-blue-400 mb-2 flex items-center gap-1'>
                                 <RefreshCw className='w-4 h-4' />
                                 功能改进
                               </h5>
@@ -507,7 +507,7 @@ export const VersionPanel: React.FC<VersionPanelProps> = ({
 
                           {entry.fixed && entry.fixed.length > 0 && (
                             <div>
-                              <h5 className='text-sm font-medium text-purple-700 dark:text-purple-400 mb-2 flex items-center gap-1'>
+                              <h5 className='text-sm font-medium text-emerald-600 dark:text-emerald-400 mb-2 flex items-center gap-1'>
                                 <Bug className='w-4 h-4' />
                                 问题修复
                               </h5>
@@ -517,7 +517,7 @@ export const VersionPanel: React.FC<VersionPanelProps> = ({
                                     key={itemIndex}
                                     className='text-sm text-gray-700 dark:text-gray-300 flex items-start gap-2'
                                   >
-                                    <span className='w-1.5 h-1.5 bg-purple-500 rounded-full mt-2 flex-shrink-0'></span>
+                                    <span className='w-1.5 h-1.5 bg-emerald-400 rounded-full mt-2 flex-shrink-0'></span>
                                     {item}
                                   </li>
                                 ))}

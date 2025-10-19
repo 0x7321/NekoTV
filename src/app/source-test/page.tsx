@@ -96,7 +96,7 @@ export default function SourceTestPage() {
               </button>
               <div className="flex items-center space-x-3">
                 <div className="p-2 bg-blue-100 dark:bg-blue-900/30 rounded-lg">
-                  <MagnifyingGlassIcon className="w-6 h-6 text-blue-600 dark:text-blue-400" />
+                  <MagnifyingGlassIcon className="w-6 h-6 text-blue-500 dark:text-blue-400" />
                 </div>
                 <div>
                   <h1 className="text-xl font-semibold text-gray-900 dark:text-white">

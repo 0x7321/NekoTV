@@ -98,7 +98,7 @@ function DoubanPageClient() {
     if (typeof window !== 'undefined') {
       localStorage.setItem('useDoubanVirtualization', JSON.stringify(newValue));
     }
-    
+
     // 切换虚拟化模式时，立即同步参数引用，避免一致性检查失败
     currentParamsRef.current = {
       type,
@@ -195,7 +195,7 @@ function DoubanPageClient() {
     if (type === 'custom' && customCategories.length > 0) {
       // 自定义分类模式：优先选择 movie，如果没有 movie 则选择 tv
       const types = Array.from(
-        new Set(customCategories.map((cat) => cat.type))
+        new Set(customCategories.map((cat) => cat.type)),
       );
       if (types.length > 0) {
         // 优先选择 movie，如果没有 movie 则选择 tv
@@ -209,7 +209,7 @@ function DoubanPageClient() {
 
         // 设置选中类型的第一个分类的 query 作为二级选择
         const firstCategory = customCategories.find(
-          (cat) => cat.type === selectedType
+          (cat) => cat.type === selectedType,
         );
         if (firstCategory) {
           setSecondarySelection(firstCategory.query);
@@ -274,7 +274,7 @@ function DoubanPageClient() {
         multiLevelSelection: Record<string, string>;
         selectedWeekday: string;
         currentPage: number;
-      }
+      },
     ) => {
       return (
         snapshot1.type === snapshot2.type &&
@@ -283,10 +283,10 @@ function DoubanPageClient() {
         snapshot1.selectedWeekday === snapshot2.selectedWeekday &&
         snapshot1.currentPage === snapshot2.currentPage &&
         JSON.stringify(snapshot1.multiLevelSelection) ===
-        JSON.stringify(snapshot2.multiLevelSelection)
+          JSON.stringify(snapshot2.multiLevelSelection)
       );
     },
-    []
+    [],
   );
 
   // 生成API请求参数的辅助函数
@@ -312,7 +312,7 @@ function DoubanPageClient() {
         pageStart,
       };
     },
-    [type, primarySelection, secondarySelection]
+    [type, primarySelection, secondarySelection],
   );
 
   // 防抖的数据加载函数
@@ -341,7 +341,7 @@ function DoubanPageClient() {
         // 自定义分类模式：根据选中的一级和二级选项获取对应的分类
         const selectedCategory = customCategories.find(
           (cat) =>
-            cat.type === primarySelection && cat.query === secondarySelection
+            cat.type === primarySelection && cat.query === secondarySelection,
         );
 
         if (selectedCategory) {
@@ -357,7 +357,7 @@ function DoubanPageClient() {
       } else if (type === 'anime' && primarySelection === '每日放送') {
         const calendarData = await GetBangumiCalendarData();
         const weekdayData = calendarData.find(
-          (item) => item.weekday.en === selectedWeekday
+          (item) => item.weekday.en === selectedWeekday,
         );
         if (weekdayData) {
           data = {
@@ -427,13 +427,15 @@ function DoubanPageClient() {
       if (data.code === 200) {
         // 更宽松的参数检查：只检查关键参数，忽略currentPage的差异
         const currentSnapshot = { ...currentParamsRef.current };
-        const keyParamsMatch = (
+        const keyParamsMatch =
           requestSnapshot.type === currentSnapshot.type &&
-          requestSnapshot.primarySelection === currentSnapshot.primarySelection &&
-          requestSnapshot.secondarySelection === currentSnapshot.secondarySelection &&
+          requestSnapshot.primarySelection ===
+            currentSnapshot.primarySelection &&
+          requestSnapshot.secondarySelection ===
+            currentSnapshot.secondarySelection &&
           requestSnapshot.selectedWeekday === currentSnapshot.selectedWeekday &&
-          JSON.stringify(requestSnapshot.multiLevelSelection) === JSON.stringify(currentSnapshot.multiLevelSelection)
-        );
+          JSON.stringify(requestSnapshot.multiLevelSelection) ===
+            JSON.stringify(currentSnapshot.multiLevelSelection);
 
         if (keyParamsMatch) {
           setDoubanData(data.list);
@@ -519,7 +521,7 @@ function DoubanPageClient() {
             const selectedCategory = customCategories.find(
               (cat) =>
                 cat.type === primarySelection &&
-                cat.query === secondarySelection
+                cat.query === secondarySelection,
             );
 
             if (selectedCategory) {
@@ -589,20 +591,23 @@ function DoubanPageClient() {
             });
           } else {
             data = await getDoubanCategories(
-              getRequestParams(currentPage * 25)
+              getRequestParams(currentPage * 25),
             );
           }
 
           if (data.code === 200) {
             // 更宽松的参数检查：只检查关键参数，忽略currentPage的差异
             const currentSnapshot = { ...currentParamsRef.current };
-            const keyParamsMatch = (
+            const keyParamsMatch =
               requestSnapshot.type === currentSnapshot.type &&
-              requestSnapshot.primarySelection === currentSnapshot.primarySelection &&
-              requestSnapshot.secondarySelection === currentSnapshot.secondarySelection &&
-              requestSnapshot.selectedWeekday === currentSnapshot.selectedWeekday &&
-              JSON.stringify(requestSnapshot.multiLevelSelection) === JSON.stringify(currentSnapshot.multiLevelSelection)
-            );
+              requestSnapshot.primarySelection ===
+                currentSnapshot.primarySelection &&
+              requestSnapshot.secondarySelection ===
+                currentSnapshot.secondarySelection &&
+              requestSnapshot.selectedWeekday ===
+                currentSnapshot.selectedWeekday &&
+              JSON.stringify(requestSnapshot.multiLevelSelection) ===
+                JSON.stringify(currentSnapshot.multiLevelSelection);
 
             if (keyParamsMatch) {
               setDoubanData((prev) => [...prev, ...data.list]);
@@ -655,7 +660,7 @@ function DoubanPageClient() {
           setCurrentPage((prev) => prev + 1);
         }
       },
-      { threshold: 0.1 }
+      { threshold: 0.1 },
     );
 
     observer.observe(loadingRef.current);
@@ -693,7 +698,7 @@ function DoubanPageClient() {
         // 如果是自定义分类模式，同时更新一级和二级选择器
         if (type === 'custom' && customCategories.length > 0) {
           const firstCategory = customCategories.find(
-            (cat) => cat.type === value
+            (cat) => cat.type === value,
           );
           if (firstCategory) {
             // 批量更新状态，避免多次触发数据加载
@@ -717,7 +722,7 @@ function DoubanPageClient() {
         }
       }
     },
-    [primarySelection, type, customCategories]
+    [primarySelection, type, customCategories],
   );
 
   const handleSecondaryChange = useCallback(
@@ -733,7 +738,7 @@ function DoubanPageClient() {
         setSecondarySelection(value);
       }
     },
-    [secondarySelection]
+    [secondarySelection],
   );
 
   const handleMultiLevelChange = useCallback(
@@ -741,7 +746,7 @@ function DoubanPageClient() {
       // 比较两个对象是否相同，忽略顺序
       const isEqual = (
         obj1: Record<string, string>,
-        obj2: Record<string, string>
+        obj2: Record<string, string>,
       ) => {
         const keys1 = Object.keys(obj1).sort();
         const keys2 = Object.keys(obj2).sort();
@@ -764,7 +769,7 @@ function DoubanPageClient() {
       setIsLoadingMore(false);
       setMultiLevelValues(values);
     },
-    [multiLevelValues]
+    [multiLevelValues],
   );
 
   const handleWeekdayChange = useCallback((weekday: string) => {
@@ -774,7 +779,7 @@ function DoubanPageClient() {
   // 处理虚拟化组件的加载更多请求
   const handleVirtualLoadMore = useCallback(() => {
     if (hasMore && !isLoadingMore) {
-      setCurrentPage(prev => prev + 1);
+      setCurrentPage((prev) => prev + 1);
     }
   }, [hasMore, isLoadingMore]);
 
@@ -838,9 +843,9 @@ function DoubanPageClient() {
 
           {/* 选择器组件 */}
           {type !== 'custom' ? (
-            <div className='relative bg-gradient-to-br from-white/80 via-blue-50/30 to-purple-50/30 dark:from-gray-800/60 dark:via-blue-900/20 dark:to-purple-900/20 rounded-2xl p-4 sm:p-6 border border-blue-200/40 dark:border-blue-700/40 backdrop-blur-md shadow-lg hover:shadow-xl transition-all duration-300'>
+            <div className='relative bg-gradient-to-br from-white/80 via-green-50/30 to-emerald-50/30 dark:from-gray-800/60 dark:via-green-900/20 dark:to-emerald-900/20 rounded-2xl p-4 sm:p-6 border border-green-200/40 dark:border-green-700/40 backdrop-blur-md shadow-lg hover:shadow-xl transition-all duration-300'>
               {/* 装饰性光晕 */}
-              <div className='absolute -top-20 -right-20 w-40 h-40 bg-gradient-to-br from-blue-300/20 to-purple-300/20 rounded-full blur-3xl pointer-events-none'></div>
+              <div className='absolute -top-20 -right-20 w-40 h-40 bg-gradient-to-br from-green-300/20 to-emerald-200/20 rounded-full blur-3xl pointer-events-none'></div>
               <div className='absolute -bottom-20 -left-20 w-40 h-40 bg-gradient-to-br from-green-300/20 to-teal-300/20 rounded-full blur-3xl pointer-events-none'></div>
 
               <div className='relative'>
@@ -856,9 +861,9 @@ function DoubanPageClient() {
               </div>
             </div>
           ) : (
-            <div className='relative bg-gradient-to-br from-white/80 via-blue-50/30 to-purple-50/30 dark:from-gray-800/60 dark:via-blue-900/20 dark:to-purple-900/20 rounded-2xl p-4 sm:p-6 border border-blue-200/40 dark:border-blue-700/40 backdrop-blur-md shadow-lg hover:shadow-xl transition-all duration-300'>
+            <div className='relative bg-gradient-to-br from-white/80 via-green-50/30 to-emerald-50/30 dark:from-gray-800/60 dark:via-green-900/20 dark:to-emerald-900/20 rounded-2xl p-4 sm:p-6 border border-green-200/40 dark:border-green-700/40 backdrop-blur-md shadow-lg hover:shadow-xl transition-all duration-300'>
               {/* 装饰性光晕 */}
-              <div className='absolute -top-20 -right-20 w-40 h-40 bg-gradient-to-br from-blue-300/20 to-purple-300/20 rounded-full blur-3xl pointer-events-none'></div>
+              <div className='absolute -top-20 -right-20 w-40 h-40 bg-gradient-to-br from-green-300/20 to-emerald-200/20 rounded-full blur-3xl pointer-events-none'></div>
               <div className='absolute -bottom-20 -left-20 w-40 h-40 bg-gradient-to-br from-green-300/20 to-teal-300/20 rounded-full blur-3xl pointer-events-none'></div>
 
               <div className='relative'>
@@ -876,7 +881,7 @@ function DoubanPageClient() {
           {/* 虚拟化开关 */}
           <div className='flex justify-end'>
             <label className='flex items-center gap-3 cursor-pointer select-none group'>
-              <span className='text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors'>
+              <span className='text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 group-hover:text-blue-500 dark:group-hover:text-blue-400 transition-colors'>
                 ⚡ 虚拟滑动
               </span>
               <div className='relative'>
@@ -886,8 +891,8 @@ function DoubanPageClient() {
                   checked={useVirtualization}
                   onChange={toggleVirtualization}
                 />
-                <div className='w-11 h-6 bg-gradient-to-r from-gray-200 to-gray-300 rounded-full peer-checked:from-blue-400 peer-checked:to-purple-500 transition-all duration-300 dark:from-gray-600 dark:to-gray-700 dark:peer-checked:from-blue-500 dark:peer-checked:to-purple-600 shadow-inner'></div>
-                <div className='absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full transition-all duration-300 peer-checked:translate-x-5 shadow-lg peer-checked:shadow-blue-300 dark:peer-checked:shadow-blue-500/50 peer-checked:scale-105'></div>
+                <div className='w-11 h-6 bg-gradient-to-r from-gray-200 to-gray-300 rounded-full peer-checked:from-green-400 peer-checked:to-emerald-400 transition-all duration-300 dark:from-gray-600 dark:to-gray-700 dark:peer-checked:from-green-400 dark:peer-checked:to-emerald-500 shadow-inner'></div>
+                <div className='absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full transition-all duration-300 peer-checked:translate-x-5 shadow-lg peer-checked:shadow-blue-200 dark:peer-checked:shadow-blue-400/50 peer-checked:scale-105'></div>
                 {/* 开关内图标 */}
                 <div className='absolute top-1.5 left-1.5 w-3 h-3 flex items-center justify-center pointer-events-none transition-all duration-300 peer-checked:translate-x-5'>
                   <span className='text-[10px] peer-checked:text-white text-gray-500'>
@@ -919,24 +924,26 @@ function DoubanPageClient() {
               <div className='justify-start grid grid-cols-3 gap-x-2 gap-y-12 px-0 sm:px-2 sm:grid-cols-[repeat(auto-fill,minmax(160px,1fr))] sm:gap-x-8 sm:gap-y-20'>
                 {loading || !selectorsReady
                   ? // 显示骨架屏
-                  skeletonData.map((index) => <DoubanCardSkeleton key={index} />)
+                    skeletonData.map((index) => (
+                      <DoubanCardSkeleton key={index} />
+                    ))
                   : // 显示实际数据
-                  doubanData.map((item, index) => (
-                    <div key={`${item.title}-${index}`} className='w-full'>
-                      <VideoCard
-                        from='douban'
-                        title={item.title}
-                        poster={item.poster}
-                        douban_id={Number(item.id)}
-                        rate={item.rate}
-                        year={item.year}
-                        type={type === 'movie' ? 'movie' : ''} // 电影类型严格控制，tv 不控
-                        isBangumi={
-                          type === 'anime' && primarySelection === '每日放送'
-                        }
-                      />
-                    </div>
-                  ))}
+                    doubanData.map((item, index) => (
+                      <div key={`${item.title}-${index}`} className='w-full'>
+                        <VideoCard
+                          from='douban'
+                          title={item.title}
+                          poster={item.poster}
+                          douban_id={Number(item.id)}
+                          rate={item.rate}
+                          year={item.year}
+                          type={type === 'movie' ? 'movie' : ''} // 电影类型严格控制，tv 不控
+                          isBangumi={
+                            type === 'anime' && primarySelection === '每日放送'
+                          }
+                        />
+                      </div>
+                    ))}
               </div>
 
               {/* 加载更多指示器 */}
@@ -966,11 +973,28 @@ function DoubanPageClient() {
 
                         {/* 文字和点动画 */}
                         <div className='flex items-center gap-1'>
-                          <span className='text-sm font-medium text-gray-700 dark:text-gray-300'>加载中</span>
+                          <span className='text-sm font-medium text-gray-700 dark:text-gray-300'>
+                            加载中
+                          </span>
                           <span className='flex gap-0.5'>
-                            <span className='animate-bounce' style={{ animationDelay: '0ms' }}>.</span>
-                            <span className='animate-bounce' style={{ animationDelay: '150ms' }}>.</span>
-                            <span className='animate-bounce' style={{ animationDelay: '300ms' }}>.</span>
+                            <span
+                              className='animate-bounce'
+                              style={{ animationDelay: '0ms' }}
+                            >
+                              .
+                            </span>
+                            <span
+                              className='animate-bounce'
+                              style={{ animationDelay: '150ms' }}
+                            >
+                              .
+                            </span>
+                            <span
+                              className='animate-bounce'
+                              style={{ animationDelay: '300ms' }}
+                            >
+                              .
+                            </span>
                           </span>
                         </div>
                       </div>
@@ -982,17 +1006,27 @@ function DoubanPageClient() {
               {/* 没有更多数据提示 */}
               {!hasMore && doubanData.length > 0 && (
                 <div className='flex justify-center mt-12 py-8'>
-                  <div className='relative px-8 py-5 rounded-2xl bg-gradient-to-r from-blue-50 via-indigo-50 to-purple-50 dark:from-blue-900/20 dark:via-indigo-900/20 dark:to-purple-900/20 border border-blue-200/50 dark:border-blue-700/50 shadow-lg backdrop-blur-sm overflow-hidden'>
+                  <div className='relative px-8 py-5 rounded-2xl bg-gradient-to-r from-green-50 via-emerald-50 to-teal-50 dark:from-green-900/20 dark:via-emerald-900/20 dark:to-teal-900/20 border border-green-200/50 dark:border-green-700/50 shadow-lg backdrop-blur-sm overflow-hidden'>
                     {/* 装饰性背景 */}
-                    <div className='absolute inset-0 bg-gradient-to-br from-blue-100/20 to-purple-100/20 dark:from-blue-800/10 dark:to-purple-800/10'></div>
+                    <div className='absolute inset-0 bg-gradient-to-br from-green-100/20 to-emerald-100/20 dark:from-green-800/10 dark:to-emerald-800/10'></div>
 
                     {/* 内容 */}
                     <div className='relative flex flex-col items-center gap-2'>
                       {/* 完成图标 */}
                       <div className='relative'>
-                        <div className='w-12 h-12 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center shadow-lg'>
-                          <svg className='w-7 h-7 text-white' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
-                            <path strokeLinecap='round' strokeLinejoin='round' strokeWidth='2.5' d='M5 13l4 4L19 7'></path>
+                        <div className='w-12 h-12 rounded-full bg-gradient-to-br from-green-400 to-emerald-500 flex items-center justify-center shadow-lg'>
+                          <svg
+                            className='w-7 h-7 text-white'
+                            fill='none'
+                            stroke='currentColor'
+                            viewBox='0 0 24 24'
+                          >
+                            <path
+                              strokeLinecap='round'
+                              strokeLinejoin='round'
+                              strokeWidth='2.5'
+                              d='M5 13l4 4L19 7'
+                            ></path>
                           </svg>
                         </div>
                         {/* 光圈效果 */}
@@ -1018,21 +1052,31 @@ function DoubanPageClient() {
                 <div className='flex justify-center py-16'>
                   <div className='relative px-12 py-10 rounded-3xl bg-gradient-to-br from-gray-50 via-slate-50 to-gray-100 dark:from-gray-800/40 dark:via-slate-800/40 dark:to-gray-800/50 border border-gray-200/50 dark:border-gray-700/50 shadow-xl backdrop-blur-sm overflow-hidden max-w-md'>
                     {/* 装饰性元素 */}
-                    <div className='absolute top-0 left-0 w-32 h-32 bg-gradient-to-br from-blue-200/20 to-purple-200/20 rounded-full blur-3xl'></div>
-                    <div className='absolute bottom-0 right-0 w-32 h-32 bg-gradient-to-br from-pink-200/20 to-orange-200/20 rounded-full blur-3xl'></div>
+                    <div className='absolute top-0 left-0 w-32 h-32 bg-gradient-to-br from-green-200/20 to-emerald-200/20 rounded-full blur-3xl'></div>
+                    <div className='absolute bottom-0 right-0 w-32 h-32 bg-gradient-to-br from-teal-200/20 to-cyan-200/20 rounded-full blur-3xl'></div>
 
                     {/* 内容 */}
                     <div className='relative flex flex-col items-center gap-4'>
                       {/* 插图图标 */}
                       <div className='relative'>
                         <div className='w-24 h-24 rounded-full bg-gradient-to-br from-gray-100 to-slate-200 dark:from-gray-700 dark:to-slate-700 flex items-center justify-center shadow-lg'>
-                          <svg className='w-12 h-12 text-gray-400 dark:text-gray-500' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
-                            <path strokeLinecap='round' strokeLinejoin='round' strokeWidth='1.5' d='M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4'></path>
+                          <svg
+                            className='w-12 h-12 text-gray-400 dark:text-gray-500'
+                            fill='none'
+                            stroke='currentColor'
+                            viewBox='0 0 24 24'
+                          >
+                            <path
+                              strokeLinecap='round'
+                              strokeLinejoin='round'
+                              strokeWidth='1.5'
+                              d='M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4'
+                            ></path>
                           </svg>
                         </div>
                         {/* 浮动小点装饰 */}
                         <div className='absolute -top-1 -right-1 w-3 h-3 bg-blue-400 rounded-full animate-ping'></div>
-                        <div className='absolute -bottom-1 -left-1 w-2 h-2 bg-purple-400 rounded-full animate-pulse'></div>
+                        <div className='absolute -bottom-1 -left-1 w-2 h-2 bg-emerald-400 rounded-full animate-pulse'></div>
                       </div>
 
                       {/* 文字内容 */}
@@ -1059,10 +1103,11 @@ function DoubanPageClient() {
       {/* 返回顶部悬浮按钮 */}
       <button
         onClick={scrollToTop}
-        className={`fixed bottom-20 md:bottom-6 right-6 z-[500] w-12 h-12 bg-green-500/90 hover:bg-green-500 text-white rounded-full shadow-lg backdrop-blur-sm transition-all duration-300 ease-in-out flex items-center justify-center group ${showBackToTop
-          ? 'opacity-100 translate-y-0 pointer-events-auto'
-          : 'opacity-0 translate-y-4 pointer-events-none'
-          }`}
+        className={`fixed bottom-20 md:bottom-6 right-6 z-[500] w-12 h-12 bg-green-500/90 hover:bg-green-500 text-white rounded-full shadow-lg backdrop-blur-sm transition-all duration-300 ease-in-out flex items-center justify-center group ${
+          showBackToTop
+            ? 'opacity-100 translate-y-0 pointer-events-auto'
+            : 'opacity-0 translate-y-4 pointer-events-none'
+        }`}
         aria-label='返回顶部'
       >
         <ChevronUp className='w-6 h-6 transition-transform group-hover:scale-110' />

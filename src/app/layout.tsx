@@ -28,6 +28,10 @@ export async function generateMetadata(): Promise<Metadata> {
     title: siteName,
     description: '影视聚合',
     manifest: '/manifest.json',
+    icons: {
+      icon: '/favicon.ico?v=2',
+      apple: '/logo.png?v=2',
+    },
   };
 }
 

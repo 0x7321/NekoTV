@@ -65,7 +65,7 @@ export default function TopContentList({ topSources, className = '' }: TopConten
                     className={`h-2 rounded-full transition-all duration-300 ${
                       index === 0 ? 'bg-yellow-500' :
                       index === 1 ? 'bg-gray-400' :
-                      index === 2 ? 'bg-amber-500' : 'bg-blue-500'
+                      index === 2 ? 'bg-amber-500' : 'bg-blue-400'
                     }`}
                     style={{ width: `${percentage}%` }}
                   />

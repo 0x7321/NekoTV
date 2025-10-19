@@ -43,3 +43,13 @@ sitemap-*.xml
 # generated files
 src/lib/runtime.ts
 public/manifest.json
+
+# IDE
+.idea/
+.vscode/
+
+# workflow
+.spec-workflow/
+
+# Claude Code
+CLAUDE.md

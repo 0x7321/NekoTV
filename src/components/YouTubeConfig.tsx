@@ -206,7 +206,7 @@ const YouTubeConfig = ({ config, refreshConfig }: YouTubeConfigProps) => {
                 />
                 <div className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
                   youtubeSettings.enableDemo
-                    ? 'bg-blue-600'
+                    ? 'bg-blue-500'
                     : 'bg-gray-200 dark:bg-gray-600'
                 }`}>
                   <span className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
@@ -236,13 +236,13 @@ const YouTubeConfig = ({ config, refreshConfig }: YouTubeConfigProps) => {
                   placeholder='AIzaSy...'
                 />
                 <div className='mt-2 text-xs text-gray-500 dark:text-gray-400'>
-                  <p className='mb-2 text-blue-600 dark:text-blue-400 font-medium'>💡 获取YouTube API密钥详细步骤：</p>
-                  <div className='space-y-2 pl-4 border-l-2 border-blue-200 dark:border-blue-700'>
-                    <p><span className='font-medium text-blue-600 dark:text-blue-400'>1.</span> 访问 <a href="https://console.cloud.google.com/" target="_blank" rel="noopener noreferrer" className='text-blue-600 dark:text-blue-400 hover:underline'>Google Cloud Console</a></p>
-                    <p><span className='font-medium text-blue-600 dark:text-blue-400'>2.</span> 创建新项目或选择现有项目</p>
-                    <p><span className='font-medium text-blue-600 dark:text-blue-400'>3.</span> 在"API和服务"中搜索并启用"YouTube Data API v3"</p>
-                    <p><span className='font-medium text-blue-600 dark:text-blue-400'>4.</span> 在"凭据"页面点击"创建凭据" → "API密钥"</p>
-                    <p><span className='font-medium text-blue-600 dark:text-blue-400'>5.</span> 复制生成的API密钥并粘贴到上方输入框</p>
+                  <p className='mb-2 text-blue-500 dark:text-blue-400 font-medium'>💡 获取YouTube API密钥详细步骤：</p>
+                  <div className='space-y-2 pl-4 border-l-2 border-blue-200 dark:border-blue-600'>
+                    <p><span className='font-medium text-blue-500 dark:text-blue-400'>1.</span> 访问 <a href="https://console.cloud.google.com/" target="_blank" rel="noopener noreferrer" className='text-blue-500 dark:text-blue-400 hover:underline'>Google Cloud Console</a></p>
+                    <p><span className='font-medium text-blue-500 dark:text-blue-400'>2.</span> 创建新项目或选择现有项目</p>
+                    <p><span className='font-medium text-blue-500 dark:text-blue-400'>3.</span> 在"API和服务"中搜索并启用"YouTube Data API v3"</p>
+                    <p><span className='font-medium text-blue-500 dark:text-blue-400'>4.</span> 在"凭据"页面点击"创建凭据" → "API密钥"</p>
+                    <p><span className='font-medium text-blue-500 dark:text-blue-400'>5.</span> 复制生成的API密钥并粘贴到上方输入框</p>
                     <div className='mt-2 p-2 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded'>
                       <p className='text-yellow-700 dark:text-yellow-300 text-xs'>⚠️ <span className='font-medium'>安全提醒：</span></p>
                       <p className='text-yellow-700 dark:text-yellow-300 text-xs'>• 建议限制API密钥的IP或域名访问</p>
@@ -255,10 +255,10 @@ const YouTubeConfig = ({ config, refreshConfig }: YouTubeConfigProps) => {
                       <p className='text-red-700 dark:text-red-300 text-xs'>• 需要使用海外服务器或代理服务</p>
                     </div>
                     <div className='mt-2 p-2 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded'>
-                      <p className='text-blue-700 dark:text-blue-300 text-xs'>📊 <span className='font-medium'>流量说明：</span></p>
-                      <p className='text-blue-700 dark:text-blue-300 text-xs'>• YouTube视频播放<strong>不消耗</strong>您的服务器流量</p>
-                      <p className='text-blue-700 dark:text-blue-300 text-xs'>• 视频内容直接从YouTube服务器传输到用户</p>
-                      <p className='text-blue-700 dark:text-blue-300 text-xs'>• 您的服务器只提供网页显示，流量消耗很小</p>
+                      <p className='text-blue-600 dark:text-blue-200 text-xs'>📊 <span className='font-medium'>流量说明：</span></p>
+                      <p className='text-blue-600 dark:text-blue-200 text-xs'>• YouTube视频播放<strong>不消耗</strong>您的服务器流量</p>
+                      <p className='text-blue-600 dark:text-blue-200 text-xs'>• 视频内容直接从YouTube服务器传输到用户</p>
+                      <p className='text-blue-600 dark:text-blue-200 text-xs'>• 您的服务器只提供网页显示，流量消耗很小</p>
                     </div>
                   </div>
                 </div>

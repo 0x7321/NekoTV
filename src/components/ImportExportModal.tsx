@@ -98,12 +98,12 @@ export default function ImportExportModal({
         <div
           className={`relative px-5 py-4 ${
             mode === 'import'
-              ? 'bg-gradient-to-r from-blue-600 to-cyan-600'
+              ? 'bg-gradient-to-r from-blue-500 to-cyan-600'
               : mode === 'export'
-              ? 'bg-gradient-to-r from-green-600 to-emerald-600'
+              ? 'bg-gradient-to-r from-green-500 to-emerald-500'
               : result && result.failed > 0
               ? 'bg-gradient-to-r from-yellow-600 to-orange-600'
-              : 'bg-gradient-to-r from-green-600 to-emerald-600'
+              : 'bg-gradient-to-r from-green-500 to-emerald-500'
           }`}
         >
           <div className='flex items-center justify-between'>
@@ -179,8 +179,8 @@ export default function ImportExportModal({
                 onDragLeave={handleDragLeave}
                 className={`border-2 border-dashed rounded-lg p-8 text-center transition-all ${
                   isDragging
-                    ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20'
-                    : 'border-gray-300 dark:border-gray-600 hover:border-blue-400 dark:hover:border-blue-500'
+                    ? 'border-blue-400 bg-blue-50 dark:bg-blue-900/20'
+                    : 'border-gray-300 dark:border-gray-600 hover:border-blue-400 dark:hover:border-blue-400'
                 }`}
               >
                 <div className='flex flex-col items-center space-y-3'>
@@ -194,7 +194,7 @@ export default function ImportExportModal({
                     <Upload
                       className={`w-10 h-10 ${
                         isDragging
-                          ? 'text-blue-600 dark:text-blue-400'
+                          ? 'text-blue-500 dark:text-blue-400'
                           : 'text-gray-400 dark:text-gray-500'
                       }`}
                     />
@@ -219,7 +219,7 @@ export default function ImportExportModal({
                       className={`px-5 py-2 rounded-lg text-sm font-medium transition-colors ${
                         isProcessing
                           ? 'bg-gray-400 cursor-not-allowed text-white'
-                          : 'bg-blue-600 hover:bg-blue-700 text-white'
+                          : 'bg-blue-500 hover:bg-blue-600 text-white'
                       }`}
                     >
                       {isProcessing ? '处理中...' : '选择 JSON 文件'}
@@ -233,7 +233,7 @@ export default function ImportExportModal({
                 <h4 className='font-semibold text-blue-900 dark:text-blue-200 mb-1.5 text-sm'>
                   📝 导入说明
                 </h4>
-                <ul className='text-xs text-blue-800 dark:text-blue-300 space-y-0.5'>
+                <ul className='text-xs text-blue-800 dark:text-blue-200 space-y-0.5'>
                   <li>• 支持标准 JSON 格式的视频源配置文件</li>
                   <li>• 重复的 key 将被跳过，不会覆盖现有配置</li>
                   <li>• 导入完成后会显示详细的导入结果</li>
@@ -354,7 +354,7 @@ export default function ImportExportModal({
           {mode === 'export' && (
             <button
               onClick={onExport}
-              className='px-4 py-2 text-sm bg-gradient-to-r from-green-600 to-emerald-600 text-white rounded-lg hover:from-green-700 hover:to-emerald-700 transition-all shadow-md hover:shadow-lg font-medium'
+              className='px-4 py-2 text-sm bg-gradient-to-r from-green-500 to-emerald-500 text-white rounded-lg hover:from-green-600 hover:to-emerald-600 transition-all shadow-md hover:shadow-lg font-medium'
             >
               确认导出
             </button>

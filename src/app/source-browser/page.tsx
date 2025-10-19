@@ -7,8 +7,12 @@ import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import { ClientCache } from '@/lib/client-cache';
+import type {
+  DoubanItem,
+  SearchResult as GlobalSearchResult,
+} from '@/lib/types';
+
 import PageLayout from '@/components/PageLayout';
-import type { DoubanItem, SearchResult as GlobalSearchResult } from '@/lib/types';
 
 type Source = { key: string; name: string; api: string };
 type Category = { type_id: string | number; type_name: string };
@@ -66,13 +70,18 @@ export default function SourceBrowserPage() {
   const [previewOpen, setPreviewOpen] = useState(false);
   const [previewLoading, setPreviewLoading] = useState(false);
   const [previewError, setPreviewError] = useState<string | null>(null);
-  const [previewData, setPreviewData] = useState<GlobalSearchResult | null>(null);
+  const [previewData, setPreviewData] = useState<GlobalSearchResult | null>(
+    null
+  );
   const [previewItem, setPreviewItem] = useState<Item | null>(null);
   const [previewDouban, setPreviewDouban] = useState<DoubanItem | null>(null);
   const [previewDoubanLoading, setPreviewDoubanLoading] = useState(false);
   const [previewDoubanId, setPreviewDoubanId] = useState<number | null>(null);
   type BangumiTag = { name: string };
-  type BangumiInfoboxValue = string | { v: string } | Array<string | { v: string }>;
+  type BangumiInfoboxValue =
+    | string
+    | { v: string }
+    | Array<string | { v: string }>;
   type BangumiInfoboxEntry = { key: string; value: BangumiInfoboxValue };
   type BangumiSubject = {
     name?: string;
@@ -83,9 +92,12 @@ export default function SourceBrowserPage() {
     infobox?: BangumiInfoboxEntry[];
     summary?: string;
   };
-  const [previewBangumi, setPreviewBangumi] = useState<BangumiSubject | null>(null);
+  const [previewBangumi, setPreviewBangumi] = useState<BangumiSubject | null>(
+    null
+  );
   const [previewBangumiLoading, setPreviewBangumiLoading] = useState(false);
-  const [previewSearchPick, setPreviewSearchPick] = useState<GlobalSearchResult | null>(null);
+  const [previewSearchPick, setPreviewSearchPick] =
+    useState<GlobalSearchResult | null>(null);
 
   const fetchSources = useCallback(async () => {
     setLoadingSources(true);
@@ -406,7 +418,8 @@ export default function SourceBrowserPage() {
         const dbData = (await fallback.json()) as
           | { code: number; message: string; data?: DoubanItem }
           | DoubanItem;
-        const normalized = (dbData as { data?: DoubanItem }).data || (dbData as DoubanItem);
+        const normalized =
+          (dbData as { data?: DoubanItem }).data || (dbData as DoubanItem);
         setPreviewDouban(normalized);
         // 3) 回写缓存（4小时）
         try {
@@ -552,12 +565,12 @@ export default function SourceBrowserPage() {
         <div className='relative'>
           <div className='absolute inset-0 bg-gradient-to-r from-emerald-400/10 via-green-400/10 to-teal-400/10 rounded-2xl blur-3xl'></div>
           <div className='relative flex items-center gap-4 bg-white/80 dark:bg-gray-800/80 backdrop-blur-xl rounded-2xl p-6 border border-gray-200/50 dark:border-gray-700/50 shadow-xl'>
-            <div className='relative w-16 h-16 rounded-2xl bg-gradient-to-br from-emerald-500 via-green-500 to-teal-500 flex items-center justify-center shadow-lg group hover:scale-110 transition-transform duration-300'>
+            <div className='relative w-16 h-16 rounded-2xl bg-gradient-to-br from-emerald-400 via-green-400 to-teal-400 flex items-center justify-center shadow-lg group hover:scale-110 transition-transform duration-300'>
               <div className='absolute inset-0 bg-emerald-400 rounded-2xl blur-xl opacity-50 group-hover:opacity-75 transition-opacity'></div>
               <Layers className='relative w-8 h-8 text-white drop-shadow-lg' />
             </div>
             <div className='flex-1'>
-              <h1 className='text-3xl md:text-4xl font-bold bg-gradient-to-r from-emerald-600 via-green-600 to-teal-600 dark:from-emerald-400 dark:via-green-400 dark:to-teal-400 bg-clip-text text-transparent'>
+              <h1 className='text-3xl md:text-4xl font-bold bg-gradient-to-r from-emerald-500 via-green-500 to-teal-500 dark:from-emerald-400 dark:via-green-400 dark:to-teal-400 bg-clip-text text-transparent'>
                 源浏览器
               </h1>
               <p className='text-sm text-gray-600 dark:text-gray-400 mt-1'>
@@ -566,8 +579,8 @@ export default function SourceBrowserPage() {
             </div>
             {sources.length > 0 && (
               <div className='hidden md:flex items-center gap-2 px-4 py-2 rounded-xl bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800'>
-                <Server className='w-4 h-4 text-emerald-600 dark:text-emerald-400' />
-                <span className='text-sm font-medium text-emerald-700 dark:text-emerald-300'>
+                <Server className='w-4 h-4 text-emerald-500 dark:text-emerald-400' />
+                <span className='text-sm font-medium text-emerald-600 dark:text-emerald-200'>
                   {sources.length} 个源可用
                 </span>
               </div>
@@ -580,12 +593,12 @@ export default function SourceBrowserPage() {
           <div className='px-5 py-4 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between'>
             <div className='flex items-center gap-2.5 font-semibold text-gray-900 dark:text-white'>
               <div className='w-8 h-8 rounded-lg bg-emerald-100 dark:bg-emerald-900/30 flex items-center justify-center'>
-                <Server className='w-4 h-4 text-emerald-600 dark:text-emerald-400' />
+                <Server className='w-4 h-4 text-emerald-500 dark:text-emerald-400' />
               </div>
               <span>选择来源站</span>
             </div>
             {!loadingSources && sources.length > 0 && (
-              <span className='text-xs px-2.5 py-1 rounded-full bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300 font-medium'>
+              <span className='text-xs px-2.5 py-1 rounded-full bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-200 font-medium'>
                 {sources.length} 个
               </span>
             )}
@@ -593,12 +606,14 @@ export default function SourceBrowserPage() {
           <div className='p-5'>
             {loadingSources ? (
               <div className='flex items-center gap-2 text-sm text-gray-500'>
-                <div className='w-4 h-4 border-2 border-emerald-600 border-t-transparent rounded-full animate-spin'></div>
+                <div className='w-4 h-4 border-2 border-emerald-500 border-t-transparent rounded-full animate-spin'></div>
                 加载中...
               </div>
             ) : sourceError ? (
               <div className='flex items-center gap-2 px-4 py-3 rounded-lg bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800'>
-                <span className='text-sm text-red-600 dark:text-red-400'>{sourceError}</span>
+                <span className='text-sm text-red-600 dark:text-red-400'>
+                  {sourceError}
+                </span>
               </div>
             ) : sources.length === 0 ? (
               <div className='text-center py-8'>
@@ -615,8 +630,8 @@ export default function SourceBrowserPage() {
                     onClick={() => setActiveSourceKey(s.key)}
                     className={`group relative px-4 py-2.5 rounded-xl text-sm font-medium border-2 transition-all duration-300 transform hover:scale-105 ${
                       activeSourceKey === s.key
-                        ? 'bg-gradient-to-r from-emerald-500 to-green-500 text-white border-transparent shadow-lg shadow-emerald-500/30'
-                        : 'border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gradient-to-r hover:from-emerald-50 hover:to-green-50 dark:hover:from-emerald-900/20 dark:hover:to-green-900/20 hover:border-emerald-300 dark:hover:border-emerald-700'
+                        ? 'bg-gradient-to-r from-emerald-400 to-green-400 text-white border-transparent'
+                        : 'border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gradient-to-r hover:from-emerald-50 hover:to-green-50 dark:hover:from-emerald-900/20 dark:hover:to-green-900/20 hover:border-emerald-200 dark:hover:border-emerald-600'
                     }`}
                     style={{
                       animation: `fadeInUp 0.3s ease-out ${index * 0.05}s both`,
@@ -730,12 +745,12 @@ export default function SourceBrowserPage() {
             <div className='px-5 py-4 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between'>
               <div className='flex items-center gap-2.5 font-semibold text-gray-900 dark:text-white'>
                 <div className='w-8 h-8 rounded-lg bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center'>
-                  <Tv className='w-4 h-4 text-blue-600 dark:text-blue-400' />
+                  <Tv className='w-4 h-4 text-blue-500 dark:text-blue-400' />
                 </div>
                 <span>{activeSource.name} 分类</span>
               </div>
               {categories.length > 0 && (
-                <span className='text-xs px-2.5 py-1 rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 font-medium'>
+                <span className='text-xs px-2.5 py-1 rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-200 font-medium'>
                   {categories.length} 个分类
                 </span>
               )}
@@ -745,7 +760,7 @@ export default function SourceBrowserPage() {
                 <div className='flex flex-wrap gap-2.5'>
                   {loadingCategories ? (
                     <div className='flex items-center gap-2 text-sm text-gray-500'>
-                      <div className='w-4 h-4 border-2 border-blue-600 border-t-transparent rounded-full animate-spin'></div>
+                      <div className='w-4 h-4 border-2 border-blue-500 border-t-transparent rounded-full animate-spin'></div>
                       加载分类...
                     </div>
                   ) : categoryError ? (
@@ -766,16 +781,15 @@ export default function SourceBrowserPage() {
                         onClick={() => setActiveCategory(c.type_id)}
                         className={`group relative px-4 py-2 rounded-xl text-sm font-medium border-2 transition-all duration-300 transform hover:scale-105 ${
                           activeCategory === c.type_id
-                            ? 'bg-gradient-to-r from-blue-500 to-indigo-500 text-white border-transparent shadow-lg shadow-blue-500/30'
-                            : 'border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gradient-to-r hover:from-blue-50 hover:to-indigo-50 dark:hover:from-blue-900/20 dark:hover:to-indigo-900/20 hover:border-blue-300 dark:hover:border-blue-700'
+                            ? 'bg-blue-500 text-white border-transparent shadow-lg'
+                            : 'border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:border-blue-200 dark:hover:border-blue-600'
                         }`}
                         style={{
-                          animation: `fadeInUp 0.3s ease-out ${index * 0.03}s both`,
+                          animation: `fadeInUp 0.3s ease-out ${
+                            index * 0.03
+                          }s both`,
                         }}
                       >
-                        {activeCategory === c.type_id && (
-                          <div className='absolute inset-0 rounded-xl bg-gradient-to-r from-blue-400 to-indigo-400 blur-lg opacity-50 -z-10'></div>
-                        )}
                         {c.type_name}
                       </button>
                     ))
@@ -786,7 +800,7 @@ export default function SourceBrowserPage() {
               <div>
                 {loadingItems ? (
                   <div className='flex items-center gap-2 text-sm text-gray-500'>
-                    <div className='w-4 h-4 border-2 border-blue-600 border-t-transparent rounded-full animate-spin'></div>
+                    <div className='w-4 h-4 border-2 border-blue-500 border-t-transparent rounded-full animate-spin'></div>
                     加载内容...
                   </div>
                 ) : itemsError ? (
@@ -806,7 +820,7 @@ export default function SourceBrowserPage() {
                       {filteredAndSorted.map((item, index) => (
                         <div
                           key={item.id}
-                          className='group relative rounded-xl overflow-hidden border-2 border-gray-200 dark:border-gray-700 hover:border-blue-400 dark:hover:border-blue-500 transition-all duration-300 bg-white dark:bg-gray-800 cursor-pointer hover:shadow-2xl hover:shadow-blue-500/20 hover:-translate-y-1'
+                          className='group relative rounded-xl overflow-hidden border-2 border-gray-200 dark:border-gray-700 hover:border-blue-400 dark:hover:border-blue-400 transition-all duration-300 bg-white dark:bg-gray-800 cursor-pointer hover:shadow-2xl hover:shadow-blue-400/20 hover:-translate-y-1'
                           onClick={() => openPreview(item)}
                           role='button'
                           tabIndex={0}
@@ -814,11 +828,13 @@ export default function SourceBrowserPage() {
                             if (e.key === 'Enter') openPreview(item);
                           }}
                           style={{
-                            animation: `fadeInUp 0.4s ease-out ${index * 0.02}s both`,
+                            animation: `fadeInUp 0.4s ease-out ${
+                              index * 0.02
+                            }s both`,
                           }}
                         >
                           {/* 发光效果 */}
-                          <div className='absolute inset-0 bg-gradient-to-t from-blue-500/0 via-blue-500/0 to-blue-500/0 group-hover:from-blue-500/10 group-hover:via-blue-500/5 group-hover:to-transparent transition-all duration-300 pointer-events-none z-10'></div>
+                          <div className='absolute inset-0 bg-gradient-to-t from-blue-400/0 via-blue-400/0 to-blue-400/0 group-hover:from-blue-400/10 group-hover:via-blue-400/5 group-hover:to-transparent transition-all duration-300 pointer-events-none z-10'></div>
 
                           <div className='aspect-[2/3] bg-gradient-to-br from-gray-100 via-gray-50 to-gray-100 dark:from-gray-700 dark:via-gray-800 dark:to-gray-700 overflow-hidden relative'>
                             {item.poster ? (
@@ -848,14 +864,14 @@ export default function SourceBrowserPage() {
 
                             {/* 分类标签 */}
                             {item.type_name && (
-                              <div className='absolute bottom-2 left-2 px-2 py-1 rounded-lg bg-blue-500/90 backdrop-blur-sm text-white text-xs font-medium'>
+                              <div className='absolute bottom-2 left-2 px-2 py-1 rounded-lg bg-blue-400/90 backdrop-blur-sm text-white text-xs font-medium'>
                                 {item.type_name}
                               </div>
                             )}
                           </div>
 
                           <div className='p-3 space-y-1.5 relative z-20'>
-                            <div className='font-medium text-gray-900 dark:text-white line-clamp-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors leading-snug min-h-[2.5rem]'>
+                            <div className='font-medium text-gray-900 dark:text-white line-clamp-2 group-hover:text-blue-500 dark:group-hover:text-blue-400 transition-colors leading-snug min-h-[2.5rem]'>
                               {item.title}
                             </div>
                             {item.remarks && (
@@ -904,7 +920,7 @@ export default function SourceBrowserPage() {
               {/* 头部 */}
               <div className='relative flex items-center justify-between px-5 sm:px-6 py-4 border-b border-gray-200 dark:border-gray-700 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm'>
                 <div className='flex items-center gap-3 flex-1 min-w-0'>
-                  <div className='w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-500 flex items-center justify-center shadow-lg'>
+                  <div className='w-10 h-10 rounded-xl bg-gradient-to-br from-blue-400 to-emerald-400 flex items-center justify-center shadow-lg'>
                     <Tv className='w-5 h-5 text-white' />
                   </div>
                   <div className='font-bold text-lg sm:text-xl text-gray-900 dark:text-white truncate'>
@@ -916,8 +932,18 @@ export default function SourceBrowserPage() {
                   onClick={() => setPreviewOpen(false)}
                   title='关闭'
                 >
-                  <svg className='w-5 h-5' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
-                    <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M6 18L18 6M6 6l12 12' />
+                  <svg
+                    className='w-5 h-5'
+                    fill='none'
+                    stroke='currentColor'
+                    viewBox='0 0 24 24'
+                  >
+                    <path
+                      strokeLinecap='round'
+                      strokeLinejoin='round'
+                      strokeWidth={2}
+                      d='M6 18L18 6M6 6l12 12'
+                    />
                   </svg>
                 </button>
               </div>
@@ -925,13 +951,21 @@ export default function SourceBrowserPage() {
               <div className='p-5 sm:p-6 overflow-auto flex-1'>
                 {previewLoading ? (
                   <div className='flex flex-col items-center justify-center py-12'>
-                    <div className='w-12 h-12 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mb-4'></div>
+                    <div className='w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mb-4'></div>
                     <div className='text-sm text-gray-500'>加载详情...</div>
                   </div>
                 ) : previewError ? (
                   <div className='flex items-center gap-3 px-4 py-3 rounded-xl bg-red-50 dark:bg-red-900/20 border-2 border-red-200 dark:border-red-800 text-sm text-red-600 dark:text-red-400'>
-                    <svg className='w-5 h-5 flex-shrink-0' fill='currentColor' viewBox='0 0 20 20'>
-                      <path fillRule='evenodd' d='M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z' clipRule='evenodd' />
+                    <svg
+                      className='w-5 h-5 flex-shrink-0'
+                      fill='currentColor'
+                      viewBox='0 0 20 20'
+                    >
+                      <path
+                        fillRule='evenodd'
+                        d='M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z'
+                        clipRule='evenodd'
+                      />
                     </svg>
                     {previewError}
                   </div>
@@ -983,7 +1017,7 @@ export default function SourceBrowserPage() {
                           }
                           if (previewBangumi?.rating?.score) {
                             return (
-                              <span className='px-2 py-0.5 rounded-md text-xs bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-300'>
+                              <span className='px-2 py-0.5 rounded-md text-xs bg-emerald-100 text-emerald-600 dark:bg-emerald-900/30 dark:text-emerald-200'>
                                 Bangumi {previewBangumi.rating.score}
                               </span>
                             );
@@ -999,7 +1033,7 @@ export default function SourceBrowserPage() {
                                 href={`https://movie.douban.com/subject/${d.id}/`}
                                 target='_blank'
                                 rel='noopener noreferrer'
-                                className='inline-flex items-center gap-1 text-xs text-blue-600 dark:text-blue-400 hover:underline'
+                                className='inline-flex items-center gap-1 text-xs text-blue-500 dark:text-blue-400 hover:underline'
                                 title='打开豆瓣页面'
                               >
                                 <ExternalLink className='w-3.5 h-3.5' /> 豆瓣
@@ -1012,7 +1046,7 @@ export default function SourceBrowserPage() {
                                 href={`https://bgm.tv/subject/${previewDoubanId}`}
                                 target='_blank'
                                 rel='noopener noreferrer'
-                                className='inline-flex items-center gap-1 text-xs text-purple-600 dark:text-purple-300 hover:underline'
+                                className='inline-flex items-center gap-1 text-xs text-emerald-500 dark:text-emerald-200 hover:underline'
                                 title='打开 Bangumi 页面'
                               >
                                 <ExternalLink className='w-3.5 h-3.5' /> Bangumi
@@ -1168,16 +1202,14 @@ export default function SourceBrowserPage() {
                             {Array.isArray(previewBangumi.tags) &&
                               previewBangumi.tags.length > 0 && (
                                 <div className='flex flex-wrap gap-2 text-xs'>
-                                  {previewBangumi.tags
-                                    .slice(0, 10)
-                                    .map((t) => (
-                                      <span
-                                        key={t.name}
-                                        className='px-2 py-0.5 rounded-full bg-gray-100 dark:bg-gray-700'
-                                      >
-                                        {t.name}
-                                      </span>
-                                    ))}
+                                  {previewBangumi.tags.slice(0, 10).map((t) => (
+                                    <span
+                                      key={t.name}
+                                      className='px-2 py-0.5 rounded-full bg-gray-100 dark:bg-gray-700'
+                                    >
+                                      {t.name}
+                                    </span>
+                                  ))}
                                 </div>
                               )}
                             {Array.isArray(previewBangumi.infobox) &&
@@ -1218,7 +1250,7 @@ export default function SourceBrowserPage() {
                 <div className='text-xs sm:text-sm text-gray-500 dark:text-gray-400'>
                   {previewData?.class && (
                     <span className='inline-flex items-center gap-1.5'>
-                      <span className='w-1.5 h-1.5 rounded-full bg-blue-500'></span>
+                      <span className='w-1.5 h-1.5 rounded-full bg-blue-400'></span>
                       {previewData.class}
                     </span>
                   )}
@@ -1234,10 +1266,13 @@ export default function SourceBrowserPage() {
                     onClick={() => {
                       if (previewItem) goPlay(previewItem);
                     }}
-                    className='group relative inline-flex items-center justify-center gap-2 px-4 sm:px-6 py-2.5 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white text-sm font-semibold shadow-lg shadow-blue-500/30 hover:shadow-xl hover:shadow-blue-500/40 transition-all duration-300 hover:scale-105'
+                    className='group relative inline-flex items-center justify-center gap-2 px-4 sm:px-6 py-2.5 rounded-xl bg-gradient-to-r from-blue-500 to-emerald-500 hover:from-blue-600 hover:to-emerald-600 text-white text-sm font-semibold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105'
                   >
-                    <div className='absolute inset-0 rounded-xl bg-gradient-to-r from-blue-400 to-indigo-400 blur-lg opacity-0 group-hover:opacity-50 transition-opacity -z-10'></div>
-                    <svg className='w-4 h-4' fill='currentColor' viewBox='0 0 20 20'>
+                    <svg
+                      className='w-4 h-4'
+                      fill='currentColor'
+                      viewBox='0 0 20 20'
+                    >
                       <path d='M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z' />
                     </svg>
                     立即播放

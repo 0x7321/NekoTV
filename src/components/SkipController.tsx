@@ -898,7 +898,7 @@ export default function SkipController({
             </div>
 
             {/* 全局开关 */}
-            <div className="bg-gradient-to-br from-blue-50/80 to-indigo-50/80 dark:from-blue-900/30 dark:to-indigo-900/30 p-5 rounded-xl mb-6 border border-blue-100/50 dark:border-blue-800/50 shadow-sm backdrop-blur-sm">
+            <div className="bg-gradient-to-br from-blue-50/80 to-emerald-50/80 dark:from-blue-900/30 dark:to-emerald-900/30 p-5 rounded-xl mb-6 border border-blue-100/50 dark:border-blue-800/50 shadow-sm backdrop-blur-sm">
               <div className="flex items-center justify-between mb-2">
                 <label className="flex items-center space-x-2">
                   <input
@@ -979,7 +979,7 @@ export default function SkipController({
                   />
                   <button
                     onClick={markCurrentAsOpeningEnd}
-                    className="w-full px-4 py-2 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white rounded-lg text-sm font-medium transition-all shadow-md hover:shadow-lg hover:scale-105 backdrop-blur-sm"
+                    className="w-full px-4 py-2 bg-gradient-to-r from-blue-400 to-blue-500 hover:from-blue-500 hover:to-blue-600 text-white rounded-lg text-sm font-medium transition-all shadow-md hover:shadow-lg hover:scale-105 backdrop-blur-sm"
                     title="标记当前播放时间为片头结束时间"
                   >
                       📍 标记当前时间
@@ -989,8 +989,8 @@ export default function SkipController({
               </div>
 
               {/* 片尾设置 */}
-              <div className="space-y-4 bg-gradient-to-br from-purple-50/50 to-pink-50/50 dark:from-purple-900/20 dark:to-pink-900/20 p-4 rounded-xl border border-purple-100/50 dark:border-purple-800/50 backdrop-blur-sm">
-                <h4 className="font-semibold text-gray-900 dark:text-gray-100 border-b border-purple-200/50 dark:border-purple-700/50 pb-2 flex items-center gap-2">
+              <div className="space-y-4 bg-gradient-to-br from-emerald-50/50 to-teal-50/50 dark:from-emerald-900/20 dark:to-teal-900/20 p-4 rounded-xl border border-emerald-100/50 dark:border-emerald-800/50 backdrop-blur-sm">
+                <h4 className="font-semibold text-gray-900 dark:text-gray-100 border-b border-emerald-200/50 dark:border-emerald-600/50 pb-2 flex items-center gap-2">
                   <span className="text-xl">🎭</span>
                   片尾设置
                 </h4>
@@ -1040,12 +1040,12 @@ export default function SkipController({
                     type="text"
                     value={batchSettings.endingStart}
                     onChange={(e) => setBatchSettings({...batchSettings, endingStart: e.target.value})}
-                    className="w-full px-4 py-2.5 border border-gray-300/50 dark:border-gray-600/50 rounded-lg bg-white/80 dark:bg-gray-700/80 text-gray-900 dark:text-gray-100 backdrop-blur-sm focus:ring-2 focus:ring-purple-500/50 focus:border-purple-500 transition-all mb-2"
+                    className="w-full px-4 py-2.5 border border-gray-300/50 dark:border-gray-600/50 rounded-lg bg-white/80 dark:bg-gray-700/80 text-gray-900 dark:text-gray-100 backdrop-blur-sm focus:ring-2 focus:ring-emerald-400/50 focus:border-emerald-400 transition-all mb-2"
                     placeholder={batchSettings.endingMode === 'remaining' ? '2:00' : '20:00'}
                   />
                   <button
                     onClick={markCurrentAsEndingStart}
-                    className="w-full px-4 py-2 bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 text-white rounded-lg text-sm font-medium transition-all shadow-md hover:shadow-lg hover:scale-105 backdrop-blur-sm"
+                    className="w-full px-4 py-2 bg-gradient-to-r from-emerald-400 to-emerald-500 hover:from-emerald-500 hover:to-emerald-600 text-white rounded-lg text-sm font-medium transition-all shadow-md hover:shadow-lg hover:scale-105 backdrop-blur-sm"
                     title="标记当前播放时间为片尾开始时间"
                   >
                     📍 标记当前时间
@@ -1066,7 +1066,7 @@ export default function SkipController({
                     type="text"
                     value={batchSettings.endingEnd}
                     onChange={(e) => setBatchSettings({...batchSettings, endingEnd: e.target.value})}
-                    className="w-full px-4 py-2.5 border border-gray-300/50 dark:border-gray-600/50 rounded-lg bg-white/80 dark:bg-gray-700/80 text-gray-900 dark:text-gray-100 backdrop-blur-sm focus:ring-2 focus:ring-purple-500/50 focus:border-purple-500 transition-all"
+                    className="w-full px-4 py-2.5 border border-gray-300/50 dark:border-gray-600/50 rounded-lg bg-white/80 dark:bg-gray-700/80 text-gray-900 dark:text-gray-100 backdrop-blur-sm focus:ring-2 focus:ring-emerald-400/50 focus:border-emerald-400 transition-all"
                     placeholder="留空直接跳下一集"
                   />
                   <p className="text-xs text-gray-500 dark:text-gray-400 mt-1.5">空白=直接跳下一集</p>
@@ -1096,7 +1096,7 @@ export default function SkipController({
             <div className="flex space-x-3 mt-6">
               <button
                 onClick={handleSaveBatchSettings}
-                className="flex-1 px-6 py-3 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white rounded-xl font-semibold transition-all shadow-lg hover:shadow-xl hover:scale-105 backdrop-blur-sm"
+                className="flex-1 px-6 py-3 bg-gradient-to-r from-green-400 to-emerald-500 hover:from-green-500 hover:to-emerald-600 text-white rounded-xl font-semibold transition-all shadow-lg hover:shadow-xl hover:scale-105 backdrop-blur-sm"
               >
                 💾 保存智能配置
               </button>
@@ -1160,7 +1160,7 @@ export default function SkipController({
 
                 <button
                   onClick={handleSaveSegment}
-                  className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded text-sm font-medium transition-colors"
+                  className="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded text-sm font-medium transition-colors"
                 >
                   添加片段
                 </button>
@@ -1226,7 +1226,7 @@ export default function SkipController({
             <div className="mt-2 pt-2 border-t border-gray-200 dark:border-gray-600">
               <button
                 onClick={() => onSettingModeChange?.(true)}
-                className="w-full px-2 py-1 bg-blue-100 hover:bg-blue-200 dark:bg-blue-900 dark:hover:bg-blue-800 text-blue-700 dark:text-blue-300 rounded text-xs transition-colors"
+                className="w-full px-2 py-1 bg-blue-100 hover:bg-blue-200 dark:bg-blue-900 dark:hover:bg-blue-800 text-blue-600 dark:text-blue-200 rounded text-xs transition-colors"
               >
                 修改配置
               </button>

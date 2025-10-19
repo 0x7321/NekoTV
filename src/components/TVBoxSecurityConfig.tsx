@@ -2,7 +2,7 @@
 
 'use client';
 
-import { AlertCircle, CheckCircle, Shield, Copy, ExternalLink } from 'lucide-react';
+import { AlertCircle, CheckCircle, Copy, ExternalLink,Shield } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
 import { AdminConfig } from '@/lib/admin.types';
@@ -202,7 +202,7 @@ const TVBoxSecurityConfig = ({ config, refreshConfig }: TVBoxSecurityConfigProps
   return (
     <div className='bg-white dark:bg-gray-800 rounded-lg shadow-md p-6'>
       <div className='flex items-center gap-3 mb-6'>
-        <Shield className='h-6 w-6 text-blue-600' />
+        <Shield className='h-6 w-6 text-blue-500' />
         <h2 className='text-xl font-bold text-gray-900 dark:text-gray-100'>
           TVBox 安全配置
         </h2>
@@ -242,7 +242,7 @@ const TVBoxSecurityConfig = ({ config, refreshConfig }: TVBoxSecurityConfigProps
                 onChange={(e) => setSecuritySettings(prev => ({ ...prev, enableAuth: e.target.checked }))}
                 className='sr-only peer'
               />
-              <div className="w-11 h-6 bg-gray-200 dark:bg-gray-700 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+              <div className="w-11 h-6 bg-gray-200 dark:bg-gray-700 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-200 dark:peer-focus:ring-blue-800 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-500"></div>
             </label>
           </div>
 
@@ -275,7 +275,7 @@ const TVBoxSecurityConfig = ({ config, refreshConfig }: TVBoxSecurityConfigProps
                     <button
                       type="button"
                       onClick={copyToken}
-                      className='flex-1 sm:flex-none px-4 py-2 text-sm bg-blue-100 dark:bg-blue-900 hover:bg-blue-200 dark:hover:bg-blue-800 text-blue-700 dark:text-blue-300 rounded-lg flex items-center justify-center gap-2 transition-colors'
+                      className='flex-1 sm:flex-none px-4 py-2 text-sm bg-blue-100 dark:bg-blue-900 hover:bg-blue-200 dark:hover:bg-blue-800 text-blue-600 dark:text-blue-200 rounded-lg flex items-center justify-center gap-2 transition-colors'
                     >
                       <Copy className='h-4 w-4' />
                       复制Token
@@ -315,7 +315,7 @@ const TVBoxSecurityConfig = ({ config, refreshConfig }: TVBoxSecurityConfigProps
                 onChange={(e) => setSecuritySettings(prev => ({ ...prev, enableIpWhitelist: e.target.checked }))}
                 className='sr-only peer'
               />
-              <div className="w-11 h-6 bg-gray-200 dark:bg-gray-700 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+              <div className="w-11 h-6 bg-gray-200 dark:bg-gray-700 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-200 dark:peer-focus:ring-blue-800 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-500"></div>
             </label>
           </div>
 
@@ -333,7 +333,7 @@ const TVBoxSecurityConfig = ({ config, refreshConfig }: TVBoxSecurityConfigProps
                 <button
                   type="button"
                   onClick={addIP}
-                  className='px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg'
+                  className='px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg'
                 >
                   添加
                 </button>
@@ -380,7 +380,7 @@ const TVBoxSecurityConfig = ({ config, refreshConfig }: TVBoxSecurityConfigProps
                 onChange={(e) => setSecuritySettings(prev => ({ ...prev, enableRateLimit: e.target.checked }))}
                 className='sr-only peer'
               />
-              <div className="w-11 h-6 bg-gray-200 dark:bg-gray-700 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+              <div className="w-11 h-6 bg-gray-200 dark:bg-gray-700 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-200 dark:peer-focus:ring-blue-800 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-500"></div>
             </label>
           </div>
 
@@ -406,7 +406,7 @@ const TVBoxSecurityConfig = ({ config, refreshConfig }: TVBoxSecurityConfigProps
 
         {/* URL示例 */}
         <div className='bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4'>
-          <h3 className='text-sm font-semibold text-blue-900 dark:text-blue-300 mb-2'>
+          <h3 className='text-sm font-semibold text-blue-900 dark:text-blue-200 mb-2'>
             TVBox配置URL
           </h3>
           <div className='space-y-2'>
@@ -424,7 +424,7 @@ const TVBoxSecurityConfig = ({ config, refreshConfig }: TVBoxSecurityConfigProps
                   navigator.clipboard.writeText(generateExampleURL());
                   showMessage('success', 'URL已复制到剪贴板');
                 }}
-                className='flex-1 sm:flex-none px-4 py-2 text-sm bg-blue-100 dark:bg-blue-800 hover:bg-blue-200 dark:hover:bg-blue-700 text-blue-700 dark:text-blue-300 rounded-lg flex items-center justify-center gap-2 transition-colors'
+                className='flex-1 sm:flex-none px-4 py-2 text-sm bg-blue-100 dark:bg-blue-800 hover:bg-blue-200 dark:hover:bg-blue-600 text-blue-600 dark:text-blue-200 rounded-lg flex items-center justify-center gap-2 transition-colors'
               >
                 <Copy className='h-4 w-4' />
                 复制URL
@@ -441,7 +441,7 @@ const TVBoxSecurityConfig = ({ config, refreshConfig }: TVBoxSecurityConfigProps
               <button
                 onClick={handleDiagnose}
                 disabled={isDiagnosing}
-                className='flex-1 sm:flex-none px-4 py-2 text-sm bg-purple-100 dark:bg-purple-800 hover:bg-purple-200 dark:hover:bg-purple-700 disabled:opacity-50 text-purple-700 dark:text-purple-300 rounded-lg flex items-center justify-center gap-2 transition-colors'
+                className='flex-1 sm:flex-none px-4 py-2 text-sm bg-emerald-100 dark:bg-emerald-800 hover:bg-emerald-200 dark:hover:bg-emerald-600 disabled:opacity-50 text-emerald-600 dark:text-emerald-200 rounded-lg flex items-center justify-center gap-2 transition-colors'
               >
                 <svg className='h-4 w-4' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
                   <path strokeLinecap='round' strokeLinejoin='round' strokeWidth='2' d='M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z' />
@@ -451,7 +451,7 @@ const TVBoxSecurityConfig = ({ config, refreshConfig }: TVBoxSecurityConfigProps
             </div>
           </div>
           
-          <p className='text-xs text-blue-700 dark:text-blue-400 mt-3'>
+          <p className='text-xs text-blue-600 dark:text-blue-400 mt-3'>
             💡 在TVBox中导入此URL即可使用。Base64格式请在URL后添加 &format=base64
           </p>
         </div>
@@ -585,7 +585,7 @@ const TVBoxSecurityConfig = ({ config, refreshConfig }: TVBoxSecurityConfigProps
                   {((diagnoseResult as any).spider_url || (diagnoseResult as any).spider_md5) && (
                     <div className='mt-2 p-2 bg-blue-50 dark:bg-blue-900/20 rounded text-xs'>
                       <div className='font-medium text-blue-800 dark:text-blue-200 mb-1'>Spider Jar 状态:</div>
-                      <div className='space-y-0.5 text-blue-700 dark:text-blue-300'>
+                      <div className='space-y-0.5 text-blue-600 dark:text-blue-200'>
                         {(diagnoseResult as any).spider_url && (
                           <div>• 来源: {(diagnoseResult as any).spider_url}</div>
                         )}
@@ -641,7 +641,7 @@ const TVBoxSecurityConfig = ({ config, refreshConfig }: TVBoxSecurityConfigProps
         <button
           onClick={handleSave}
           disabled={isLoading}
-          className='px-6 py-2 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white rounded-lg font-medium transition-colors'
+          className='px-6 py-2 bg-blue-500 hover:bg-blue-600 disabled:bg-gray-400 text-white rounded-lg font-medium transition-colors'
         >
           {isLoading ? '保存中...' : '保存配置'}
         </button>

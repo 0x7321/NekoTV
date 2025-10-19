@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any,no-console */
 import { NextRequest, NextResponse } from 'next/server';
 
-import { API_CONFIG, getConfig } from '@/lib/config';
 import { getAdminRoleFromRequest } from '@/lib/admin-auth';
+import { API_CONFIG, getConfig } from '@/lib/config';
 
 export const runtime = 'nodejs';
 

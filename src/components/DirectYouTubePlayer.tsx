@@ -1,7 +1,8 @@
 'use client';
 
+import { AlertCircle, CheckCircle,ExternalLink, Play } from 'lucide-react';
 import { useState } from 'react';
-import { Play, ExternalLink, AlertCircle, CheckCircle } from 'lucide-react';
+
 import YouTubeVideoCard from './YouTubeVideoCard';
 
 // YouTube URL解析工具函数
@@ -173,7 +174,7 @@ const DirectYouTubePlayer = ({ className = '' }: DirectYouTubePlayerProps) => {
                 ? 'border-red-300 focus:ring-red-500 bg-red-50 dark:bg-red-900/10 dark:border-red-600' 
                 : isValidUrl === true
                 ? 'border-green-300 focus:ring-green-500 bg-green-50 dark:bg-green-900/10 dark:border-green-600'
-                : 'border-gray-300 focus:ring-blue-500 bg-white dark:bg-gray-800 dark:border-gray-600'
+                : 'border-gray-300 focus:ring-blue-400 bg-white dark:bg-gray-800 dark:border-gray-600'
             } dark:text-gray-100 dark:placeholder-gray-400`}
             disabled={isLoading}
           />

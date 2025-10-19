@@ -384,7 +384,7 @@ export default function SourceTestModule() {
 
     switch (status) {
       case 'testing':
-        return <ArrowPathIcon className='w-4 h-4 animate-spin text-blue-500' />;
+        return <ArrowPathIcon className='w-4 h-4 animate-spin text-blue-400' />;
       case 'success':
         return <CheckCircleIcon className='w-4 h-4 text-green-500' />;
       case 'error':
@@ -485,7 +485,7 @@ export default function SourceTestModule() {
                 placeholder='输入要搜索的内容...'
                 className='w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg 
                          bg-white dark:bg-gray-700 text-gray-900 dark:text-white
-                         focus:ring-2 focus:ring-blue-500 focus:border-transparent'
+                         focus:ring-2 focus:ring-blue-400 focus:border-transparent'
               />
             </div>
           </div>
@@ -561,7 +561,7 @@ export default function SourceTestModule() {
               </div>
             </div>
             <div className='text-center'>
-              <div className='text-2xl font-bold text-blue-600'>
+              <div className='text-2xl font-bold text-blue-500'>
                 {stats.testing}
               </div>
               <div className='text-sm text-gray-600 dark:text-gray-400'>
@@ -587,7 +587,7 @@ export default function SourceTestModule() {
                   <span className='text-yellow-600'>
                     超时: {stats.enabledTimeout}
                   </span>
-                  <span className='text-blue-600'>
+                  <span className='text-blue-500'>
                     测试中: {stats.enabledTesting}
                   </span>
                 </div>
@@ -606,7 +606,7 @@ export default function SourceTestModule() {
                   <span className='text-yellow-600'>
                     超时: {stats.disabledTimeout}
                   </span>
-                  <span className='text-blue-600'>
+                  <span className='text-blue-500'>
                     测试中: {stats.disabledTesting}
                   </span>
                 </div>
@@ -629,7 +629,7 @@ export default function SourceTestModule() {
             <select
               value={sortKey}
               onChange={(e) => setSortKey(e.target.value as any)}
-              className='text-xs sm:text-sm border border-gray-300 dark:border-gray-600 rounded-lg px-2 sm:px-3 py-1.5 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent'
+              className='text-xs sm:text-sm border border-gray-300 dark:border-gray-600 rounded-lg px-2 sm:px-3 py-1.5 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-400 focus:border-transparent'
             >
               <option value='status'>状态</option>
               <option value='responseTime'>耗时</option>
@@ -658,7 +658,7 @@ export default function SourceTestModule() {
                 className={`border rounded-lg p-4 transition-all hover:shadow-md ${
                   source.disabled
                     ? 'border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900'
-                    : 'border-gray-200 dark:border-gray-700 hover:border-blue-300 dark:hover:border-blue-700'
+                    : 'border-gray-200 dark:border-gray-700 hover:border-blue-200 dark:hover:border-blue-600'
                 }`}
               >
                 <div className='flex flex-col md:flex-row md:items-center md:justify-between gap-3'>
@@ -719,7 +719,7 @@ export default function SourceTestModule() {
                           </div>
                         )}
                         {result.status === 'testing' && (
-                          <div className='text-sm text-blue-600 font-medium'>测试中...</div>
+                          <div className='text-sm text-blue-500 font-medium'>测试中...</div>
                         )}
                         {result.topMatches && result.topMatches.length > 0 && (
                           <div
@@ -737,7 +737,7 @@ export default function SourceTestModule() {
                     {result?.results && result.results.length > 0 && (
                       <button
                         onClick={() => handleViewResults(result.results)}
-                        className='px-3 py-2 sm:py-1 text-sm bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors'
+                        className='px-3 py-2 sm:py-1 text-sm bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors'
                       >
                         查看结果
                       </button>
@@ -799,7 +799,7 @@ export default function SourceTestModule() {
                         <div className='text-yellow-600 font-medium'>请求超时</div>
                       )}
                       {result.status === 'testing' && (
-                        <div className='text-blue-600 font-medium'>测试中...</div>
+                        <div className='text-blue-500 font-medium'>测试中...</div>
                       )}
                     </div>
                     {result.topMatches && result.topMatches.length > 0 && (

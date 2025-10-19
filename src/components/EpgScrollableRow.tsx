@@ -157,7 +157,7 @@ export default function EpgScrollableRow({
         </div>
         <div className="min-h-[100px] sm:min-h-[120px] flex items-center justify-center">
           <div className="flex items-center gap-3 sm:gap-4 text-gray-500 dark:text-gray-400">
-            <div className="w-5 h-5 sm:w-6 sm:h-6 border-2 border-gray-300 border-t-blue-500 rounded-full animate-spin"></div>
+            <div className="w-5 h-5 sm:w-6 sm:h-6 border-2 border-gray-300 border-t-blue-400 rounded-full animate-spin"></div>
             <span className="text-sm sm:text-base">加载节目单...</span>
           </div>
         </div>
@@ -229,7 +229,7 @@ export default function EpgScrollableRow({
                   : isFinishedProgram
                     ? 'bg-gray-300/50 dark:bg-gray-800 border-gray-300 dark:border-gray-700'
                     : isUpcomingProgram
-                      ? 'bg-blue-500/10 dark:bg-blue-500/20 border-blue-500/30'
+                      ? 'bg-blue-400/10 dark:bg-blue-400/20 border-blue-400/30'
                       : 'bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600'
                   }`}
               >
@@ -240,7 +240,7 @@ export default function EpgScrollableRow({
                     : isFinishedProgram
                       ? 'text-gray-500 dark:text-gray-400'
                       : isUpcomingProgram
-                        ? 'text-blue-600 dark:text-blue-400'
+                        ? 'text-blue-500 dark:text-blue-400'
                         : 'text-gray-600 dark:text-gray-300'
                     }`}>
                     {formatTime(program.start)}

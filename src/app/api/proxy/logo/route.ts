@@ -12,8 +12,8 @@ const LOGO_CACHE_TTL = 86400000; // 24小时
 const MAX_CACHE_SIZE = 500;
 
 // 连接池管理
-import * as https from 'https';
 import * as http from 'http';
+import * as https from 'https';
 
 const httpsAgent = new https.Agent({
   keepAlive: true,
