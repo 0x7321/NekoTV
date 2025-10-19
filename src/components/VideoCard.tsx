@@ -866,7 +866,7 @@ const VideoCard = forwardRef<VideoCardHandle, VideoCardProps>(
             {/* 集数徽章 - 左上角第一位 */}
             {actualEpisodes && actualEpisodes > 1 && (
               <div
-                className='absolute top-2 left-2 bg-blue-500/90 dark:bg-blue-600/90 backdrop-blur-md text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-lg transition-all duration-300 ease-out group-hover:scale-105 group-hover:shadow-blue-400/50 z-30'
+                className='absolute top-2 left-2 bg-white/10 backdrop-blur-md text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-lg ring-1 ring-white/30 transition-all duration-300 ease-out group-hover:scale-105 group-hover:bg-white/20 group-hover:ring-white/50 z-30'
                 style={
                   {
                     WebkitUserSelect: 'none',
@@ -918,10 +918,10 @@ const VideoCard = forwardRef<VideoCardHandle, VideoCardProps>(
                 </div>
               )}
 
-            {/* 已完结徽章 - 美化版，放在底部左侧 */}
+            {/* 已完结徽章 - 美化版，放在底部右侧 */}
             {remarks && isSeriesCompleted(remarks) && (
               <div
-                className='absolute bottom-2 left-2 bg-gradient-to-br from-blue-400/95 via-blue-450/95 to-emerald-500/95 backdrop-blur-md text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-lg ring-2 ring-white/30 transition-all duration-300 ease-out group-hover:scale-105 group-hover:ring-blue-200/50'
+                className='absolute bottom-2 right-2 bg-white/10 backdrop-blur-md text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-lg ring-1 ring-white/30 transition-all duration-300 ease-out group-hover:scale-105 group-hover:bg-white/20 group-hover:ring-white/50'
                 style={
                   {
                     WebkitUserSelect: 'none',
@@ -1187,7 +1187,7 @@ const VideoCard = forwardRef<VideoCardHandle, VideoCardProps>(
           {/* 进度条 */}
           {config.showProgress && progress !== undefined && (
             <div
-              className='mt-1 h-1 w-full bg-gray-200 rounded-full overflow-hidden'
+              className='mt-1 h-1 w-full bg-gray-200/50 dark:bg-gray-700/50 rounded-full overflow-hidden'
               style={
                 {
                   WebkitUserSelect: 'none',
@@ -1201,7 +1201,7 @@ const VideoCard = forwardRef<VideoCardHandle, VideoCardProps>(
               }}
             >
               <div
-                className='h-full bg-green-500 transition-all duration-500 ease-out'
+                className='h-full bg-green-500/70 dark:bg-green-400/70 transition-all duration-500 ease-out'
                 style={
                   {
                     width: `${progress}%`,

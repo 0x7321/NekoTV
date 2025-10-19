@@ -377,6 +377,10 @@ function PlayPageClient() {
   const [isEpisodeSelectorCollapsed, setIsEpisodeSelectorCollapsed] =
     useState(false);
 
+  // 控制按钮显示状态
+  const [showControlButtons, setShowControlButtons] = useState(true);
+  const controlButtonsTimerRef = useRef<NodeJS.Timeout | null>(null);
+
   // 换源加载状态
   const [isVideoLoading, setIsVideoLoading] = useState(true);
   const [videoLoadingStage, setVideoLoadingStage] = useState<
@@ -1578,6 +1582,15 @@ function PlayPageClient() {
       danmuLoadingRef.current = false;
     }
   };
+
+  // 初始化5秒后自动隐藏控制按钮
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowControlButtons(false);
+    }, 5000);
+
+    return () => clearTimeout(timer);
+  }, []);
 
   // 🚀 优化的集数变化处理（防抖 + 状态保护）
   useEffect(() => {
@@ -3062,34 +3075,34 @@ function PlayPageClient() {
                 handleNextEpisode();
               },
             },
-            // 🚀 简单弹幕发送按钮（仅Web端显示）
-            ...(isMobile
-              ? []
-              : [
-                  {
-                    position: 'right',
-                    html: '弹',
-                    tooltip: '发送弹幕',
-                    click: function () {
-                      if (
-                        artPlayerRef.current?.plugins?.artplayerPluginDanmuku
-                      ) {
-                        // 手动弹出输入框发送弹幕
-                        const text = prompt('请输入弹幕内容', '');
-                        if (text && text.trim()) {
-                          artPlayerRef.current.plugins.artplayerPluginDanmuku.emit(
-                            {
-                              text: text.trim(),
-                              time: artPlayerRef.current.currentTime,
-                              color: '#FFFFFF',
-                              mode: 0,
-                            }
-                          );
-                        }
-                      }
-                    },
-                  },
-                ]),
+            // 🚀 简单弹幕发送按钮（已关闭显示）
+            // ...(isMobile
+            //   ? []
+            //   : [
+            //       {
+            //         position: 'right',
+            //         html: '弹',
+            //         tooltip: '发送弹幕',
+            //         click: function () {
+            //           if (
+            //             artPlayerRef.current?.plugins?.artplayerPluginDanmuku
+            //           ) {
+            //             // 手动弹出输入框发送弹幕
+            //             const text = prompt('请输入弹幕内容', '');
+            //             if (text && text.trim()) {
+            //               artPlayerRef.current.plugins.artplayerPluginDanmuku.emit(
+            //                 {
+            //                   text: text.trim(),
+            //                   time: artPlayerRef.current.currentTime,
+            //                   color: '#FFFFFF',
+            //                   mode: 0,
+            //                 }
+            //               );
+            //             }
+            //           }
+            //         },
+            //       },
+            //     ]),
           ],
           // 🚀 性能优化的弹幕插件配置 - 保持弹幕数量，优化渲染性能
           plugins: [
@@ -4447,48 +4460,6 @@ function PlayPageClient() {
         </div>
         {/* 第二行：播放器和选集 */}
         <div className='space-y-2'>
-          {/* 折叠控制 */}
-          <div className='flex justify-end items-center'>
-            {/* 折叠控制按钮 - 仅在 lg 及以上屏幕显示 */}
-            <button
-              onClick={() =>
-                setIsEpisodeSelectorCollapsed(!isEpisodeSelectorCollapsed)
-              }
-              className='hidden lg:flex group relative items-center space-x-1.5 px-3 py-1.5 rounded-full bg-white/80 hover:bg-white dark:bg-gray-800/80 dark:hover:bg-gray-800 backdrop-blur-sm border border-gray-200/50 dark:border-gray-700/50 shadow-sm hover:shadow-md transition-all duration-200'
-              title={
-                isEpisodeSelectorCollapsed ? '显示选集面板' : '隐藏选集面板'
-              }
-            >
-              <svg
-                className={`w-3.5 h-3.5 text-gray-500 dark:text-gray-400 transition-transform duration-200 ${
-                  isEpisodeSelectorCollapsed ? 'rotate-180' : 'rotate-0'
-                }`}
-                fill='none'
-                stroke='currentColor'
-                viewBox='0 0 24 24'
-              >
-                <path
-                  strokeLinecap='round'
-                  strokeLinejoin='round'
-                  strokeWidth='2'
-                  d='M9 5l7 7-7 7'
-                />
-              </svg>
-              <span className='text-xs font-medium text-gray-600 dark:text-gray-300'>
-                {isEpisodeSelectorCollapsed ? '显示' : '隐藏'}
-              </span>
-
-              {/* 精致的状态指示点 */}
-              <div
-                className={`absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full transition-all duration-200 ${
-                  isEpisodeSelectorCollapsed
-                    ? 'bg-orange-400 animate-pulse'
-                    : 'bg-green-400'
-                }`}
-              ></div>
-            </button>
-          </div>
-
           <div
             className={`grid gap-4 lg:h-[500px] xl:h-[650px] 2xl:h-[750px] transition-all duration-300 ease-in-out ${
               isEpisodeSelectorCollapsed
@@ -4508,35 +4479,101 @@ function PlayPageClient() {
                   className='bg-black w-full h-full rounded-xl overflow-hidden shadow-lg'
                 ></div>
 
-                {/* 跳过设置按钮 - 播放器内右上角 */}
+                {/* 播放器控制按钮容器 - 鼠标移入显示 */}
                 {currentSource && currentId && (
-                  <div className='absolute top-4 right-4 z-10'>
-                    <button
-                      onClick={() => setIsSkipSettingOpen(true)}
-                      className='group flex items-center gap-2 px-4 py-2 bg-white/10 hover:bg-white/20 backdrop-blur-xl rounded-xl border border-white/30 hover:border-white/50 shadow-[0_8px_32px_0_rgba(0,0,0,0.37)] hover:shadow-[0_8px_32px_0_rgba(255,255,255,0.18)] hover:scale-105 transition-all duration-300 ease-out'
-                      title='跳过设置'
-                      style={{
-                        backdropFilter: 'blur(20px) saturate(180%)',
-                        WebkitBackdropFilter: 'blur(20px) saturate(180%)',
-                      }}
-                    >
-                      <svg
-                        className='w-5 h-5 text-white drop-shadow-lg group-hover:rotate-90 transition-all duration-300'
-                        fill='none'
-                        stroke='currentColor'
-                        viewBox='0 0 24 24'
+                  <div
+                    className='absolute inset-0 z-10 pointer-events-none'
+                    onMouseEnter={() => {
+                      if (controlButtonsTimerRef.current) {
+                        clearTimeout(controlButtonsTimerRef.current);
+                      }
+                      setShowControlButtons(true);
+                    }}
+                    onMouseLeave={() => {
+                      controlButtonsTimerRef.current = setTimeout(() => {
+                        setShowControlButtons(false);
+                      }, 5000);
+                    }}
+                  >
+                    {/* 跳过设置按钮 - 播放器内左上角 */}
+                    <div className='absolute top-4 left-4 pointer-events-auto'>
+                      <button
+                        onClick={() => setIsSkipSettingOpen(true)}
+                        className={`group flex items-center gap-2 px-4 py-2 bg-white/10 hover:bg-white/20 backdrop-blur-xl rounded-xl border border-white/30 hover:border-white/50 shadow-[0_8px_32px_0_rgba(0,0,0,0.37)] hover:shadow-[0_8px_32px_0_rgba(255,255,255,0.18)] hover:scale-105 transition-all duration-300 ease-out ${
+                          showControlButtons
+                            ? 'opacity-100'
+                            : 'opacity-0 pointer-events-none'
+                        }`}
+                        title='跳过设置'
+                        style={{
+                          backdropFilter: 'blur(20px) saturate(180%)',
+                          WebkitBackdropFilter: 'blur(20px) saturate(180%)',
+                        }}
                       >
-                        <path
-                          strokeLinecap='round'
-                          strokeLinejoin='round'
-                          strokeWidth={2}
-                          d='M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4'
-                        />
-                      </svg>
-                      <span className='text-sm font-medium text-white drop-shadow-lg transition-all duration-300 hidden sm:inline'>
-                        跳过设置
-                      </span>
-                    </button>
+                        <svg
+                          className='w-5 h-5 text-white drop-shadow-lg group-hover:rotate-90 transition-all duration-300'
+                          fill='none'
+                          stroke='currentColor'
+                          viewBox='0 0 24 24'
+                        >
+                          <path
+                            strokeLinecap='round'
+                            strokeLinejoin='round'
+                            strokeWidth={2}
+                            d='M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4'
+                          />
+                        </svg>
+                        <span className='text-sm font-medium text-white drop-shadow-lg transition-all duration-300 hidden sm:inline'>
+                          跳过设置
+                        </span>
+                      </button>
+                    </div>
+
+                    {/* 隐藏/显示选集面板按钮 - 播放器内右上角 */}
+                    <div className='absolute top-4 right-4 pointer-events-auto hidden lg:block'>
+                      <button
+                        onClick={() =>
+                          setIsEpisodeSelectorCollapsed(
+                            !isEpisodeSelectorCollapsed
+                          )
+                        }
+                        className={`group flex items-center gap-2 px-4 py-2 bg-white/10 hover:bg-white/20 backdrop-blur-xl rounded-xl border border-white/30 hover:border-white/50 shadow-[0_8px_32px_0_rgba(0,0,0,0.37)] hover:shadow-[0_8px_32px_0_rgba(255,255,255,0.18)] hover:scale-105 transition-all duration-300 ease-out ${
+                          showControlButtons
+                            ? 'opacity-100'
+                            : 'opacity-0 pointer-events-none'
+                        }`}
+                        title={
+                          isEpisodeSelectorCollapsed
+                            ? '显示选集面板'
+                            : '隐藏选集面板'
+                        }
+                        style={{
+                          backdropFilter: 'blur(20px) saturate(180%)',
+                          WebkitBackdropFilter: 'blur(20px) saturate(180%)',
+                        }}
+                      >
+                        <svg
+                          className={`w-5 h-5 text-white drop-shadow-lg transition-transform duration-300 ${
+                            isEpisodeSelectorCollapsed
+                              ? 'rotate-180'
+                              : 'rotate-0'
+                          }`}
+                          fill='none'
+                          stroke='currentColor'
+                          viewBox='0 0 24 24'
+                        >
+                          <path
+                            strokeLinecap='round'
+                            strokeLinejoin='round'
+                            strokeWidth='2'
+                            d='M9 5l7 7-7 7'
+                          />
+                        </svg>
+                        <span className='text-sm font-medium text-white drop-shadow-lg transition-all duration-300 hidden sm:inline'>
+                          {isEpisodeSelectorCollapsed ? '显示' : '隐藏'}选集
+                        </span>
+                      </button>
+                    </div>
                   </div>
                 )}
 

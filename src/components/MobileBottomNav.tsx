@@ -33,11 +33,6 @@ const MobileBottomNav = ({ activePath }: MobileBottomNavProps) => {
   const [navItems, setNavItems] = useState([
     { icon: Home, label: '首页', href: '/' },
     {
-      icon: Globe,
-      label: '源浏览',
-      href: '/source-browser',
-    },
-    {
       icon: Film,
       label: '电影',
       href: '/douban?type=movie',
@@ -66,6 +61,11 @@ const MobileBottomNav = ({ activePath }: MobileBottomNavProps) => {
       icon: Radio,
       label: '直播',
       href: '/live',
+    },
+    {
+      icon: Globe,
+      label: '源浏览',
+      href: '/source-browser',
     },
   ]);
 
