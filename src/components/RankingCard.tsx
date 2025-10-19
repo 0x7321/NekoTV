@@ -4,21 +4,30 @@
 import React from 'react';
 
 interface RankingCardProps {
+  cateId: string | number;
   title: string;
   backgroundImage: string;
   topItems: Array<{
     title: string;
     poster: string;
   }>;
-  onViewMore?: () => void;
 }
 
 const RankingCard: React.FC<RankingCardProps> = ({
+  cateId,
   title,
   backgroundImage,
   topItems,
-  onViewMore,
 }) => {
+  const handleViewMore = () => {
+    // 保存分类信息到 sessionStorage
+    sessionStorage.setItem(
+      `discover_${cateId}`,
+      JSON.stringify({ name: title, pic: backgroundImage })
+    );
+    // 跳转到详情页
+    window.location.href = `/discover/${cateId}`;
+  };
   return (
     <div
       className='ranking-card min-w-[340px] min-h-[300px] rounded-[18px] p-[18px] flex flex-col gap-4 relative overflow-hidden'
@@ -32,16 +41,14 @@ const RankingCard: React.FC<RankingCardProps> = ({
       <div className='absolute inset-0 bg-gradient-to-b from-black/25 to-black/85 z-0'></div>
 
       {/* 查看全部按钮 */}
-      {onViewMore && (
-        <div className='absolute top-4 right-[18px] z-10'>
-          <button
-            onClick={onViewMore}
-            className='text-white text-sm px-[10px] py-1 rounded-full bg-[#111111]/65 border border-white/35 hover:bg-white/90 hover:text-[#111] transition-all'
-          >
-            查看全部 &gt;
-          </button>
-        </div>
-      )}
+      <div className='absolute top-4 right-[18px] z-10'>
+        <button
+          onClick={handleViewMore}
+          className='text-white text-sm px-[10px] py-1 rounded-full bg-[#111111]/65 border border-white/35 hover:bg-white/90 hover:text-[#111] transition-all'
+        >
+          查看全部 &gt;
+        </button>
+      </div>
 
       {/* 标题 */}
       <div className='relative z-10'>

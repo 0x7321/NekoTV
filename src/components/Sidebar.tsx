@@ -173,6 +173,11 @@ const Sidebar = ({ onToggle, activePath = '/' }: SidebarProps) => {
       href: '/live',
     },
     {
+      icon: Star,
+      label: '全球榜单',
+      href: '/?tab=discover',
+    },
+    {
       icon: Globe,
       label: '源浏览器',
       href: '/source-browser',

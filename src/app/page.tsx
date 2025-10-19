@@ -430,6 +430,8 @@ function HomeClient() {
                               section.list.map((item: any) => (
                                 <PlatformCard
                                   key={item.cate_id}
+                                  cateId={item.cate_id}
+                                  categoryName={item.name}
                                   backgroundImage={item.pic}
                                   topItems={
                                     item.list_vod
@@ -463,6 +465,7 @@ function HomeClient() {
                               rank.list.map((item: any) => (
                                 <RankingCard
                                   key={item.cate_id}
+                                  cateId={item.cate_id}
                                   title={item.name}
                                   backgroundImage={item.pic}
                                   topItems={
