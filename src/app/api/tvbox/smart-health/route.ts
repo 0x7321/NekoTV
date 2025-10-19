@@ -83,8 +83,7 @@ function generateRecommendations(
     const successfulDomesticSources = testResults.filter(
       (r) =>
         r.success &&
-        (r.url.includes('iqiq.io') ||
-          r.url.includes('cors.isteed.cc'))
+        (r.url.includes('iqiq.io') || r.url.includes('cors.isteed.cc'))
     );
 
     if (successfulDomesticSources.length === 0) {

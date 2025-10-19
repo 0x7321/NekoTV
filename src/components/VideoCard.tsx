@@ -29,7 +29,7 @@ import {
   saveFavorite,
   subscribeToDataUpdates,
 } from '@/lib/db.client';
-import { isSeriesCompleted,processImageUrl } from '@/lib/utils';
+import { isSeriesCompleted, processImageUrl } from '@/lib/utils';
 import { useLongPress } from '@/hooks/useLongPress';
 
 import { ImagePlaceholder } from '@/components/ImagePlaceholder';
@@ -866,7 +866,7 @@ const VideoCard = forwardRef<VideoCardHandle, VideoCardProps>(
             {/* 集数徽章 - 左上角第一位 */}
             {actualEpisodes && actualEpisodes > 1 && (
               <div
-                className='absolute top-2 left-2 bg-gradient-to-br from-emerald-400/95 via-teal-400/95 to-cyan-600/95 backdrop-blur-md text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-lg ring-2 ring-white/30 transition-all duration-300 ease-out group-hover:scale-105 group-hover:shadow-emerald-400/60 group-hover:ring-emerald-200/50 z-30'
+                className='absolute top-2 left-2 bg-blue-500/90 dark:bg-blue-600/90 backdrop-blur-md text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-lg transition-all duration-300 ease-out group-hover:scale-105 group-hover:shadow-blue-400/50 z-30'
                 style={
                   {
                     WebkitUserSelect: 'none',

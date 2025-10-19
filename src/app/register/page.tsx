@@ -48,8 +48,8 @@ function VersionDisplay() {
             updateStatus === UpdateStatus.HAS_UPDATE
               ? 'text-yellow-600 dark:text-yellow-400'
               : updateStatus === UpdateStatus.NO_UPDATE
-                ? 'text-green-600 dark:text-green-400'
-                : ''
+              ? 'text-green-600 dark:text-green-400'
+              : ''
           }`}
         >
           {updateStatus === UpdateStatus.HAS_UPDATE && (
@@ -394,8 +394,8 @@ function RegisterPageClient() {
             {loading
               ? '注册中...'
               : success
-                ? '注册成功，正在跳转...'
-                : '立即注册'}
+              ? '注册成功，正在跳转...'
+              : '立即注册'}
           </button>
 
           <div className='mt-6 pt-6 border-t border-gray-200 dark:border-gray-700'>

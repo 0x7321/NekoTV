@@ -67,9 +67,7 @@ async function tryFetchHead(
 }
 
 // 调用 health 端点检查 spider jar 健康状态
-async function checkSpiderHealth(
-  spider: string
-): Promise<{
+async function checkSpiderHealth(spider: string): Promise<{
   accessible: boolean;
   status?: number;
   contentLength?: string;
@@ -120,7 +118,10 @@ export async function GET(req: NextRequest) {
     const { searchParams } = new URL(req.url);
     const token = searchParams.get('token');
 
-    console.log('[Diagnose] Backend - Received token:', token ? '***' + token.slice(-4) : 'none');
+    console.log(
+      '[Diagnose] Backend - Received token:',
+      token ? '***' + token.slice(-4) : 'none'
+    );
     console.log('[Diagnose] Backend - Request URL:', req.url);
 
     // 直接调用 tvbox API 函数，而不是通过 HTTP fetch
@@ -130,7 +131,10 @@ export async function GET(req: NextRequest) {
       configUrl += `&token=${encodeURIComponent(token)}`;
     }
 
-    console.log('[Diagnose] Backend - Direct calling tvbox GET with URL:', configUrl);
+    console.log(
+      '[Diagnose] Backend - Direct calling tvbox GET with URL:',
+      configUrl
+    );
 
     // 创建模拟请求
     const mockRequest = new NextRequest(configUrl, {

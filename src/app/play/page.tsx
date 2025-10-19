@@ -3,7 +3,7 @@
 'use client';
 
 import Hls from 'hls.js';
-import { ChevronUp,Heart } from 'lucide-react';
+import { ChevronUp, Heart } from 'lucide-react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Suspense, useEffect, useRef, useState } from 'react';
 
@@ -14,6 +14,7 @@ import {
   deletePlayRecord,
   generateStorageKey,
   getAllPlayRecords,
+  getPlayRecord,
   isFavorited,
   saveFavorite,
   savePlayRecord,
@@ -1227,16 +1228,26 @@ function PlayPageClient() {
 
   // 清理播放器资源的统一函数（添加更完善的清理逻辑）
   const cleanupPlayer = () => {
-    // 🚀 新增：清理弹幕优化相关的定时器
-    if (danmuOperationTimeoutRef.current) {
-      clearTimeout(danmuOperationTimeoutRef.current);
-      danmuOperationTimeoutRef.current = null;
-    }
+    // 🔥 统一清理所有定时器，防止内存泄漏
+    const timers = [
+      { ref: danmuOperationTimeoutRef, type: 'timeout' },
+      { ref: episodeSwitchTimeoutRef, type: 'timeout' },
+      { ref: sourceSwitchTimeoutRef, type: 'timeout' },
+      { ref: seekResetTimeoutRef, type: 'timeout' },
+      { ref: resizeResetTimeoutRef, type: 'timeout' },
+      { ref: saveIntervalRef, type: 'interval' },
+    ];
 
-    if (episodeSwitchTimeoutRef.current) {
-      clearTimeout(episodeSwitchTimeoutRef.current);
-      episodeSwitchTimeoutRef.current = null;
-    }
+    timers.forEach(({ ref, type }) => {
+      if (ref.current) {
+        if (type === 'timeout') {
+          clearTimeout(ref.current);
+        } else {
+          clearInterval(ref.current);
+        }
+        ref.current = null;
+      }
+    });
 
     // 清理弹幕状态引用
     danmuPluginStateRef.current = null;
@@ -1302,7 +1313,7 @@ function PlayPageClient() {
     return filteredLines.join('\n');
   }
 
-  const formatTime = (seconds: number): string => {
+  const _formatTime = (seconds: number): string => {
     if (seconds === 0) return '00:00';
 
     const hours = Math.floor(seconds / 3600);
@@ -2452,16 +2463,14 @@ function PlayPageClient() {
     }
 
     try {
-      // 获取现有播放记录以保持原始集数
-      const existingRecord = await getAllPlayRecords()
-        .then((records) => {
-          const key = generateStorageKey(
-            currentSourceRef.current,
-            currentIdRef.current
-          );
-          return records[key];
-        })
-        .catch(() => null);
+      // 🔥 优化：只获取当前播放记录，不获取所有记录
+      // 减少 Redis 操作，提高性能
+
+      // 先尝试从缓存获取
+      const existingRecord = await getPlayRecord(
+        currentSourceRef.current,
+        currentIdRef.current
+      ).catch(() => null);
 
       const currentTotalEpisodes = detailRef.current?.episodes.length || 1;
 
@@ -4106,7 +4115,7 @@ function PlayPageClient() {
         artPlayerRef.current.on('video:timeupdate', () => {
           const currentTime = artPlayerRef.current.currentTime || 0;
           const duration = artPlayerRef.current.duration || 0;
-          const now = performance.now(); // 使用performance.now()更精确
+          const _now = performance.now(); // 使用performance.now()更精确
 
           // 更新 SkipController 所需的时间信息
           setCurrentPlayTime(currentTime);
@@ -4114,9 +4123,12 @@ function PlayPageClient() {
 
           // 保存播放进度逻辑 - 优化所有存储类型的保存间隔
           const saveNow = Date.now();
-          // upstash需要更长间隔避免频率限制，其他存储类型也适当降低频率减少性能开销
+          // 🔥 优化：大幅提高保存间隔，减少 Redis 操作
+          // upstash: 3分钟，普通: 1分钟
           const interval =
-            process.env.NEXT_PUBLIC_STORAGE_TYPE === 'upstash' ? 20000 : 10000; // 统一提高到10秒
+            process.env.NEXT_PUBLIC_STORAGE_TYPE === 'upstash'
+              ? 3 * 60 * 1000 // 3分钟
+              : 60 * 1000; // 1分钟
 
           // 🔥 关键修复：如果当前播放位置接近视频结尾（最后3分钟），不保存进度
           // 这是为了避免自动跳过片尾时保存了片尾位置的进度，导致"继续观看"从错误位置开始
@@ -4929,10 +4941,9 @@ function PlayPageClient() {
                               .map((country: string, index: number) => (
                                 <span
                                   key={index}
-                                  className='relative group bg-gradient-to-r from-blue-400/90 to-cyan-500/90 dark:from-blue-500/90 dark:to-cyan-600/90 text-white px-3 py-1 rounded-full text-xs font-medium shadow-md hover:shadow-lg hover:shadow-blue-400/30 transition-all duration-300 hover:scale-105'
+                                  className='bg-blue-500/90 dark:bg-blue-600/90 text-white px-3 py-1 rounded-full text-xs font-medium shadow-md hover:shadow-lg hover:shadow-blue-400/30 transition-all duration-200 hover:scale-105'
                                 >
-                                  <span className='absolute inset-0 bg-gradient-to-r from-blue-400 to-cyan-400 rounded-full opacity-0 group-hover:opacity-20 blur transition-opacity duration-300'></span>
-                                  <span className='relative'>{country}</span>
+                                  {country}
                                 </span>
                               ))}
                           {movieDetails.languages &&
@@ -4941,34 +4952,24 @@ function PlayPageClient() {
                               .map((language: string, index: number) => (
                                 <span
                                   key={index}
-                                  className='relative group bg-gradient-to-r from-emerald-400/90 to-teal-400/90 dark:from-emerald-500/90 dark:to-teal-500/90 text-white px-3 py-1 rounded-full text-xs font-medium shadow-md hover:shadow-lg hover:shadow-emerald-400/30 transition-all duration-300 hover:scale-105'
+                                  className='bg-cyan-500/90 dark:bg-cyan-600/90 text-white px-3 py-1 rounded-full text-xs font-medium shadow-md hover:shadow-lg hover:shadow-cyan-400/30 transition-all duration-200 hover:scale-105'
                                 >
-                                  <span className='absolute inset-0 bg-gradient-to-r from-emerald-400 to-teal-400 rounded-full opacity-0 group-hover:opacity-20 blur transition-opacity duration-300'></span>
-                                  <span className='relative'>{language}</span>
+                                  {language}
                                 </span>
                               ))}
                           {movieDetails.episodes && (
-                            <span className='relative group bg-gradient-to-r from-green-400/90 to-emerald-400/90 dark:from-green-500/90 dark:to-emerald-500/90 text-white px-3 py-1 rounded-full text-xs font-medium shadow-md hover:shadow-lg hover:shadow-green-400/30 transition-all duration-300 hover:scale-105'>
-                              <span className='absolute inset-0 bg-gradient-to-r from-green-400 to-emerald-400 rounded-full opacity-0 group-hover:opacity-20 blur transition-opacity duration-300'></span>
-                              <span className='relative'>
-                                共{movieDetails.episodes}集
-                              </span>
+                            <span className='bg-emerald-500/90 dark:bg-emerald-600/90 text-white px-3 py-1 rounded-full text-xs font-medium shadow-md hover:shadow-lg hover:shadow-emerald-400/30 transition-all duration-200 hover:scale-105'>
+                              共{movieDetails.episodes}集
                             </span>
                           )}
                           {movieDetails.episode_length && (
-                            <span className='relative group bg-gradient-to-r from-orange-500/90 to-amber-500/90 dark:from-orange-600/90 dark:to-amber-600/90 text-white px-3 py-1 rounded-full text-xs font-medium shadow-md hover:shadow-lg hover:shadow-orange-500/30 transition-all duration-300 hover:scale-105'>
-                              <span className='absolute inset-0 bg-gradient-to-r from-orange-400 to-amber-400 rounded-full opacity-0 group-hover:opacity-20 blur transition-opacity duration-300'></span>
-                              <span className='relative'>
-                                单集{movieDetails.episode_length}分钟
-                              </span>
+                            <span className='bg-orange-500/90 dark:bg-orange-600/90 text-white px-3 py-1 rounded-full text-xs font-medium shadow-md hover:shadow-lg hover:shadow-orange-400/30 transition-all duration-200 hover:scale-105'>
+                              单集{movieDetails.episode_length}分钟
                             </span>
                           )}
                           {movieDetails.movie_duration && (
-                            <span className='relative group bg-gradient-to-r from-red-500/90 to-orange-500/90 dark:from-red-600/90 dark:to-orange-600/90 text-white px-3 py-1 rounded-full text-xs font-medium shadow-md hover:shadow-lg hover:shadow-red-500/30 transition-all duration-300 hover:scale-105'>
-                              <span className='absolute inset-0 bg-gradient-to-r from-red-400 to-orange-400 rounded-full opacity-0 group-hover:opacity-20 blur transition-opacity duration-300'></span>
-                              <span className='relative'>
-                                {movieDetails.movie_duration}分钟
-                              </span>
+                            <span className='bg-red-500/90 dark:bg-red-600/90 text-white px-3 py-1 rounded-full text-xs font-medium shadow-md hover:shadow-lg hover:shadow-red-400/30 transition-all duration-200 hover:scale-105'>
+                              {movieDetails.movie_duration}分钟
                             </span>
                           )}
                         </div>

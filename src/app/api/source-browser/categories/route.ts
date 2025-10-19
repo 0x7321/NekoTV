@@ -51,15 +51,16 @@ export async function GET(request: NextRequest) {
       name?: string;
     };
     const data = (await res.json()) as { class?: AppleCMSClass[] };
-    const classes: AppleCMSClass[] = Array.isArray(data.class) ? data.class : [];
+    const classes: AppleCMSClass[] = Array.isArray(data.class)
+      ? data.class
+      : [];
     const categories = classes
       .map((c) => ({
         type_id: c.type_id ?? c.typeid ?? c.id,
         type_name: c.type_name ?? c.typename ?? c.name,
       }))
-      .filter(
-        (c): c is { type_id: string | number; type_name: string } =>
-          Boolean(c.type_id && c.type_name)
+      .filter((c): c is { type_id: string | number; type_name: string } =>
+        Boolean(c.type_id && c.type_name)
       );
 
     return NextResponse.json({ categories });

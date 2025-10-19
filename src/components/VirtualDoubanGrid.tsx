@@ -5,10 +5,12 @@ import dynamic from 'next/dynamic';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 
 const Grid = dynamic(
-  () => import('react-window').then(mod => ({ default: mod.Grid })),
-  { 
+  () => import('react-window').then((mod) => ({ default: mod.Grid })),
+  {
     ssr: false,
-    loading: () => <div className="animate-pulse h-96 bg-gray-200 dark:bg-gray-800 rounded-lg" />
+    loading: () => (
+      <div className='animate-pulse h-96 bg-gray-200 dark:bg-gray-800 rounded-lg' />
+    ),
   }
 );
 
@@ -21,17 +23,17 @@ import VideoCard from '@/components/VideoCard';
 interface VirtualDoubanGridProps {
   // 豆瓣数据
   doubanData: DoubanItem[];
-  
+
   // 分页相关
   hasMore: boolean;
   isLoadingMore: boolean;
   onLoadMore: () => void;
-  
+
   // 类型和状态
   type: string;
   loading: boolean;
   primarySelection?: string;
-  
+
   // 是否来自番组计划
   isBangumi?: boolean;
 }
@@ -52,15 +54,16 @@ export const VirtualDoubanGrid: React.FC<VirtualDoubanGridProps> = ({
   isBangumi = false,
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
-  const { columnCount, itemWidth, itemHeight, containerWidth } = useResponsiveGrid(containerRef);
-  
+  const { columnCount, itemWidth, itemHeight, containerWidth } =
+    useResponsiveGrid(containerRef);
+
   // 渐进式加载状态
   const [visibleItemCount, setVisibleItemCount] = useState(INITIAL_BATCH_SIZE);
   const [isVirtualLoadingMore, setIsVirtualLoadingMore] = useState(false);
 
   // 总数据数量
   const totalItemCount = doubanData.length;
-  
+
   // 实际显示的项目数量（考虑渐进式加载）
   const displayItemCount = Math.min(visibleItemCount, totalItemCount);
   const displayData = doubanData.slice(0, displayItemCount);
@@ -76,25 +79,26 @@ export const VirtualDoubanGrid: React.FC<VirtualDoubanGridProps> = ({
     const checkContainer = () => {
       const element = containerRef.current;
       const actualWidth = element?.offsetWidth || 0;
-      
+
       console.log('VirtualDoubanGrid container debug:', {
         actualWidth,
         containerWidth,
         offsetWidth: element?.offsetWidth,
         clientWidth: element?.clientWidth,
         scrollWidth: element?.scrollWidth,
-        element: !!element
+        element: !!element,
       });
     };
-    
+
     checkContainer();
   }, [containerWidth]);
 
   // 检查是否还有更多项目可以加载（虚拟层面）
   const hasNextVirtualPage = displayItemCount < totalItemCount;
-  
+
   // 检查是否需要从服务器加载更多数据
-  const needsServerData = displayItemCount >= totalItemCount * 0.8 && hasMore && !isLoadingMore;
+  const needsServerData =
+    displayItemCount >= totalItemCount * 0.8 && hasMore && !isLoadingMore;
 
   // 防止重复调用onLoadMore的ref
   const lastLoadMoreCallRef = useRef<number>(0);
@@ -102,24 +106,30 @@ export const VirtualDoubanGrid: React.FC<VirtualDoubanGridProps> = ({
   // 加载更多项目（虚拟层面）
   const loadMoreVirtualItems = useCallback(() => {
     if (isVirtualLoadingMore) return;
-    
+
     setIsVirtualLoadingMore(true);
-    
+
     // 模拟异步加载
     setTimeout(() => {
-      setVisibleItemCount(prev => {
+      setVisibleItemCount((prev) => {
         const newCount = Math.min(prev + LOAD_MORE_BATCH_SIZE, totalItemCount);
-        
+
         // 如果虚拟数据即将用完，触发服务器数据加载
         if (newCount >= totalItemCount * 0.8 && hasMore && !isLoadingMore) {
           onLoadMore();
         }
-        
+
         return newCount;
       });
       setIsVirtualLoadingMore(false);
     }, 100);
-  }, [isVirtualLoadingMore, totalItemCount, hasMore, isLoadingMore, onLoadMore]);
+  }, [
+    isVirtualLoadingMore,
+    totalItemCount,
+    hasMore,
+    isLoadingMore,
+    onLoadMore,
+  ]);
 
   // 网格行数计算
   const rowCount = Math.ceil(displayItemCount / columnCount);
@@ -128,47 +138,49 @@ export const VirtualDoubanGrid: React.FC<VirtualDoubanGridProps> = ({
   const isSingleRow = rowCount === 1;
 
   // 渲染单个网格项 - 支持react-window v2.1.0的ariaAttributes
-  const CellComponent = useCallback(({ 
-    ariaAttributes,
-    columnIndex, 
-    rowIndex, 
-    style,
-    displayData: cellDisplayData,
-    type: cellType,
-    primarySelection: cellPrimarySelection,
-    isBangumi: cellIsBangumi,
-    columnCount: cellColumnCount,
-    displayItemCount: cellDisplayItemCount,
-  }: any) => {
-    const index = rowIndex * cellColumnCount + columnIndex;
-    
-    // 如果超出显示范围，返回隐藏的占位符
-    if (index >= cellDisplayItemCount) {
-      return <div style={{ ...style, visibility: 'hidden' }} />;
-    }
+  const CellComponent = useCallback(
+    ({
+      ariaAttributes,
+      columnIndex,
+      rowIndex,
+      style,
+      displayData: cellDisplayData,
+      type: cellType,
+      primarySelection: cellPrimarySelection,
+      isBangumi: cellIsBangumi,
+      columnCount: cellColumnCount,
+      displayItemCount: cellDisplayItemCount,
+    }: any) => {
+      const index = rowIndex * cellColumnCount + columnIndex;
 
-    const item = cellDisplayData[index];
+      // 如果超出显示范围，返回隐藏的占位符
+      if (index >= cellDisplayItemCount) {
+        return <div style={{ ...style, visibility: 'hidden' }} />;
+      }
 
-    if (!item) {
-      return <div style={{ ...style, visibility: 'hidden' }} />;
-    }
+      const item = cellDisplayData[index];
 
-    return (
-      <div style={{ ...style, padding: '8px' }} {...ariaAttributes}>
-        <VideoCard
-          from='douban'
-          title={item.title}
-          poster={item.poster}
-          douban_id={Number(item.id)}
-          rate={item.rate}
-          year={item.year}
-          type={cellType === 'movie' ? 'movie' : ''} // 电影类型严格控制，tv 不控
-          isBangumi={cellIsBangumi}
-        />
-      </div>
-    );
-  }, []);
+      if (!item) {
+        return <div style={{ ...style, visibility: 'hidden' }} />;
+      }
 
+      return (
+        <div style={{ ...style, padding: '8px' }} {...ariaAttributes}>
+          <VideoCard
+            from='douban'
+            title={item.title}
+            poster={item.poster}
+            douban_id={Number(item.id)}
+            rate={item.rate}
+            year={item.year}
+            type={cellType === 'movie' ? 'movie' : ''} // 电影类型严格控制，tv 不控
+            isBangumi={cellIsBangumi}
+          />
+        </div>
+      );
+    },
+    []
+  );
 
   // 生成骨架屏数据
   const skeletonData = Array.from({ length: 25 }, (_, index) => index);
@@ -178,7 +190,9 @@ export const VirtualDoubanGrid: React.FC<VirtualDoubanGridProps> = ({
       {loading ? (
         // 加载状态显示骨架屏
         <div className='justify-start grid grid-cols-3 gap-x-2 gap-y-12 px-0 sm:px-2 sm:grid-cols-[repeat(auto-fill,minmax(160px,1fr))] sm:gap-x-8 sm:gap-y-20'>
-          {skeletonData.map((index) => <DoubanCardSkeleton key={index} />)}
+          {skeletonData.map((index) => (
+            <DoubanCardSkeleton key={index} />
+          ))}
         </div>
       ) : totalItemCount === 0 ? (
         <div className='flex justify-center py-16'>
@@ -192,8 +206,18 @@ export const VirtualDoubanGrid: React.FC<VirtualDoubanGridProps> = ({
               {/* 插图图标 */}
               <div className='relative'>
                 <div className='w-24 h-24 rounded-full bg-gradient-to-br from-gray-100 to-slate-200 dark:from-gray-700 dark:to-slate-700 flex items-center justify-center shadow-lg'>
-                  <svg className='w-12 h-12 text-gray-400 dark:text-gray-500' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
-                    <path strokeLinecap='round' strokeLinejoin='round' strokeWidth='1.5' d='M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4'></path>
+                  <svg
+                    className='w-12 h-12 text-gray-400 dark:text-gray-500'
+                    fill='none'
+                    stroke='currentColor'
+                    viewBox='0 0 24 24'
+                  >
+                    <path
+                      strokeLinecap='round'
+                      strokeLinejoin='round'
+                      strokeWidth='1.5'
+                      d='M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4'
+                    ></path>
                   </svg>
                 </div>
                 {/* 浮动小点装饰 */}
@@ -241,7 +265,7 @@ export const VirtualDoubanGrid: React.FC<VirtualDoubanGridProps> = ({
           rowHeight={itemHeight + 16}
           overscanCount={3}
           // 添加ARIA支持提升无障碍体验
-          role="grid"
+          role='grid'
           aria-label={`豆瓣${type}列表，共${displayItemCount}个结果`}
           aria-rowcount={rowCount}
           aria-colcount={columnCount}
@@ -278,7 +302,7 @@ export const VirtualDoubanGrid: React.FC<VirtualDoubanGridProps> = ({
           }}
         />
       )}
-      
+
       {/* 加载更多指示器 */}
       {containerWidth > 100 && (isVirtualLoadingMore || isLoadingMore) && (
         <div className='flex justify-center mt-8 py-8'>
@@ -296,57 +320,99 @@ export const VirtualDoubanGrid: React.FC<VirtualDoubanGridProps> = ({
 
               {/* 文字和点动画 */}
               <div className='flex items-center gap-1'>
-                <span className='text-sm font-medium text-gray-700 dark:text-gray-300'>加载中</span>
+                <span className='text-sm font-medium text-gray-700 dark:text-gray-300'>
+                  加载中
+                </span>
                 <span className='flex gap-0.5'>
-                  <span className='animate-bounce' style={{ animationDelay: '0ms' }}>.</span>
-                  <span className='animate-bounce' style={{ animationDelay: '150ms' }}>.</span>
-                  <span className='animate-bounce' style={{ animationDelay: '300ms' }}>.</span>
+                  <span
+                    className='animate-bounce'
+                    style={{ animationDelay: '0ms' }}
+                  >
+                    .
+                  </span>
+                  <span
+                    className='animate-bounce'
+                    style={{ animationDelay: '150ms' }}
+                  >
+                    .
+                  </span>
+                  <span
+                    className='animate-bounce'
+                    style={{ animationDelay: '300ms' }}
+                  >
+                    .
+                  </span>
                 </span>
               </div>
             </div>
           </div>
         </div>
       )}
-      
+
       {/* 已加载完所有内容的提示 */}
-      {containerWidth > 100 && !hasMore && !hasNextVirtualPage && displayItemCount > 0 && (
-        <div className='flex justify-center mt-8 py-8'>
-          <div className='relative px-8 py-5 rounded-2xl bg-gradient-to-r from-blue-50 via-emerald-50 to-emerald-50 dark:from-blue-900/20 dark:via-emerald-900/20 dark:to-emerald-900/20 border border-blue-200/50 dark:border-blue-600/50 shadow-lg backdrop-blur-sm overflow-hidden'>
-            {/* 装饰性背景 */}
-            <div className='absolute inset-0 bg-gradient-to-br from-blue-100/20 to-emerald-100/20 dark:from-blue-800/10 dark:to-emerald-800/10'></div>
+      {containerWidth > 100 &&
+        !hasMore &&
+        !hasNextVirtualPage &&
+        displayItemCount > 0 && (
+          <div className='flex justify-center mt-8 py-8'>
+            <div className='relative px-8 py-5 rounded-2xl bg-gradient-to-r from-blue-50 via-emerald-50 to-emerald-50 dark:from-blue-900/20 dark:via-emerald-900/20 dark:to-emerald-900/20 border border-blue-200/50 dark:border-blue-600/50 shadow-lg backdrop-blur-sm overflow-hidden'>
+              {/* 装饰性背景 */}
+              <div className='absolute inset-0 bg-gradient-to-br from-blue-100/20 to-emerald-100/20 dark:from-blue-800/10 dark:to-emerald-800/10'></div>
 
-            {/* 内容 */}
-            <div className='relative flex flex-col items-center gap-2'>
-              {/* 完成图标 */}
-              <div className='relative'>
-                <div className='w-12 h-12 rounded-full bg-gradient-to-br from-blue-400 to-emerald-400 flex items-center justify-center shadow-lg'>
-                  {isBangumi ? (
-                    <svg className='w-7 h-7 text-white' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
-                      <path strokeLinecap='round' strokeLinejoin='round' strokeWidth='2' d='M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z'></path>
-                    </svg>
-                  ) : (
-                    <svg className='w-7 h-7 text-white' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
-                      <path strokeLinecap='round' strokeLinejoin='round' strokeWidth='2.5' d='M5 13l4 4L19 7'></path>
-                    </svg>
-                  )}
+              {/* 内容 */}
+              <div className='relative flex flex-col items-center gap-2'>
+                {/* 完成图标 */}
+                <div className='relative'>
+                  <div className='w-12 h-12 rounded-full bg-gradient-to-br from-blue-400 to-emerald-400 flex items-center justify-center shadow-lg'>
+                    {isBangumi ? (
+                      <svg
+                        className='w-7 h-7 text-white'
+                        fill='none'
+                        stroke='currentColor'
+                        viewBox='0 0 24 24'
+                      >
+                        <path
+                          strokeLinecap='round'
+                          strokeLinejoin='round'
+                          strokeWidth='2'
+                          d='M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z'
+                        ></path>
+                      </svg>
+                    ) : (
+                      <svg
+                        className='w-7 h-7 text-white'
+                        fill='none'
+                        stroke='currentColor'
+                        viewBox='0 0 24 24'
+                      >
+                        <path
+                          strokeLinecap='round'
+                          strokeLinejoin='round'
+                          strokeWidth='2.5'
+                          d='M5 13l4 4L19 7'
+                        ></path>
+                      </svg>
+                    )}
+                  </div>
+                  {/* 光圈效果 */}
+                  <div className='absolute inset-0 rounded-full bg-blue-400/30 animate-ping'></div>
                 </div>
-                {/* 光圈效果 */}
-                <div className='absolute inset-0 rounded-full bg-blue-400/30 animate-ping'></div>
-              </div>
 
-              {/* 文字 */}
-              <div className='text-center'>
-                <p className='text-base font-semibold text-gray-800 dark:text-gray-200 mb-1'>
-                  {isBangumi ? '本日番剧已全部显示' : '已加载全部内容'}
-                </p>
-                <p className='text-xs text-gray-600 dark:text-gray-400'>
-                  {isBangumi ? `今日共 ${displayItemCount} 部` : `共 ${displayItemCount} 项`}
-                </p>
+                {/* 文字 */}
+                <div className='text-center'>
+                  <p className='text-base font-semibold text-gray-800 dark:text-gray-200 mb-1'>
+                    {isBangumi ? '本日番剧已全部显示' : '已加载全部内容'}
+                  </p>
+                  <p className='text-xs text-gray-600 dark:text-gray-400'>
+                    {isBangumi
+                      ? `今日共 ${displayItemCount} 部`
+                      : `共 ${displayItemCount} 项`}
+                  </p>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      )}
+        )}
     </div>
   );
 };

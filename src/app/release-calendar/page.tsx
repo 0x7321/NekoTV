@@ -959,9 +959,7 @@ export default function ReleaseCalendarPage() {
                               }`}
                             >
                               {/* 日期标题 */}
-                              <div
-                                className="flex items-center justify-between mb-3 pb-2 border-b border-gray-200 dark:border-gray-700"
-                              >
+                              <div className='flex items-center justify-between mb-3 pb-2 border-b border-gray-200 dark:border-gray-700'>
                                 <h4
                                   className={`text-lg font-semibold ${
                                     isToday

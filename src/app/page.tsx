@@ -157,7 +157,7 @@ function HomeClient() {
             '获取热门电影失败:',
             moviesData.status === 'rejected'
               ? moviesData.reason
-              : '数据格式错误',
+              : '数据格式错误'
           );
         }
 
@@ -172,7 +172,7 @@ function HomeClient() {
             '获取热门剧集失败:',
             tvShowsData.status === 'rejected'
               ? tvShowsData.reason
-              : '数据格式错误',
+              : '数据格式错误'
           );
         }
 
@@ -187,7 +187,7 @@ function HomeClient() {
             '获取热门综艺失败:',
             varietyShowsData.status === 'rejected'
               ? varietyShowsData.reason
-              : '数据格式错误',
+              : '数据格式错误'
           );
         }
 
@@ -210,7 +210,7 @@ function HomeClient() {
             'Bangumi接口失败或返回数据格式错误:',
             bangumiCalendarData.status === 'rejected'
               ? bangumiCalendarData.reason
-              : '数据格式错误',
+              : '数据格式错误'
           );
           setBangumiCalendarData([]);
         }
@@ -272,7 +272,7 @@ function HomeClient() {
       'favoritesUpdated',
       (newFavorites: Record<string, any>) => {
         updateFavoriteItems(newFavorites);
-      },
+      }
     );
 
     return unsubscribe;
@@ -561,7 +561,7 @@ function HomeClient() {
                         // 找到当前星期对应的番剧数据
                         const todayAnimes =
                           bangumiCalendarData.find(
-                            (item) => item.weekday.en === currentWeekday,
+                            (item) => item.weekday.en === currentWeekday
                           )?.items || [];
 
                         return todayAnimes.map((anime, index) => (

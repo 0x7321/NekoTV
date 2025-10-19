@@ -69,7 +69,11 @@ function isLikelyDomesticEnvironment(): boolean {
   try {
     // 检查时区（简单判断）
     const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
-    if (tz.includes('Asia/Shanghai') || tz.includes('Asia/Chongqing') || tz.includes('Asia/Beijing')) {
+    if (
+      tz.includes('Asia/Shanghai') ||
+      tz.includes('Asia/Chongqing') ||
+      tz.includes('Asia/Beijing')
+    ) {
       return true;
     }
 
@@ -155,7 +159,9 @@ async function fetchRemote(
         continue;
       }
 
-      console.log(`[SpiderJar] Successfully fetched ${url}: ${ab.byteLength} bytes`);
+      console.log(
+        `[SpiderJar] Successfully fetched ${url}: ${ab.byteLength} bytes`
+      );
       return Buffer.from(ab);
     } catch (error: unknown) {
       _lastError = error instanceof Error ? error.message : 'fetch error';
@@ -170,7 +176,11 @@ async function fetchRemote(
   }
 
   // 记录最终失败
-  console.warn(`[SpiderJar] Failed to fetch ${url} after ${retryCount + 1} attempts: ${_lastError}`);
+  console.warn(
+    `[SpiderJar] Failed to fetch ${url} after ${
+      retryCount + 1
+    } attempts: ${_lastError}`
+  );
   return null;
 }
 

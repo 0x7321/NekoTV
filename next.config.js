@@ -14,6 +14,14 @@ const nextConfig = {
     instrumentationHook: process.env.NODE_ENV === 'production',
   },
 
+  // 🔥 生产环境移除 console.log，保留 warn 和 error
+  compiler: {
+    removeConsole:
+      process.env.NODE_ENV === 'production'
+        ? { exclude: ['error', 'warn'] }
+        : false,
+  },
+
   // Uncoment to add domain whitelist
   images: {
     unoptimized: true,

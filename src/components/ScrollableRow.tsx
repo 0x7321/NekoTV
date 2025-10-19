@@ -110,7 +110,7 @@ export default function ScrollableRow({
         onScroll={checkScroll}
       >
         {enableAnimation ? (
-          <AnimatedCardGrid className="flex space-x-6">
+          <AnimatedCardGrid className='flex space-x-6'>
             {children}
           </AnimatedCardGrid>
         ) : (

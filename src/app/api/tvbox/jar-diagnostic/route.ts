@@ -43,7 +43,10 @@ interface DiagnosticReport {
 }
 
 // 测试单个 JAR 源
-async function testJarSource(url: string, name: string): Promise<JarTestResult> {
+async function testJarSource(
+  url: string,
+  name: string
+): Promise<JarTestResult> {
   const startTime = Date.now();
   const result: JarTestResult = {
     url,

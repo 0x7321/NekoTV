@@ -36,7 +36,11 @@ export async function GET(request: NextRequest) {
 
     if (source && id) {
       // 获取单个配置
-      const config = await db.getEpisodeSkipConfig(authInfo.username, source, id);
+      const config = await db.getEpisodeSkipConfig(
+        authInfo.username,
+        source,
+        id
+      );
       return NextResponse.json(config);
     } else {
       // 获取所有配置
@@ -89,7 +93,12 @@ export async function POST(request: NextRequest) {
       updated_time: Number(config.updated_time) || Date.now(),
     };
 
-    await db.saveEpisodeSkipConfig(authInfo.username, source, id, episodeSkipConfig);
+    await db.saveEpisodeSkipConfig(
+      authInfo.username,
+      source,
+      id,
+      episodeSkipConfig
+    );
 
     return NextResponse.json({ success: true });
   } catch (error) {

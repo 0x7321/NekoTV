@@ -42,13 +42,17 @@ interface SourceTestResult {
 function computeMatchRate(results: SearchResult[], q: string) {
   const lowerQ = (q || '').toLowerCase();
   if (!results || results.length === 0) return 0;
-  const hit = results.filter((r) => (r.title || '').toLowerCase().includes(lowerQ)).length;
+  const hit = results.filter((r) =>
+    (r.title || '').toLowerCase().includes(lowerQ)
+  ).length;
   return hit / results.length;
 }
 
 function computeTopMatches(results: SearchResult[], q: string) {
   const lowerQ = (q || '').toLowerCase();
-  const hit = results.filter((r) => (r.title || '').toLowerCase().includes(lowerQ));
+  const hit = results.filter((r) =>
+    (r.title || '').toLowerCase().includes(lowerQ)
+  );
   return hit.slice(0, 3).map((r) => r.title || '');
 }
 
@@ -686,7 +690,10 @@ export default function SourceTestModule() {
                       </div>
                       <div className='text-sm text-gray-500 dark:text-gray-400 mt-1'>
                         <div className='font-mono text-xs'>{source.key}</div>
-                        <div className='truncate hover:whitespace-normal hover:break-all transition-all cursor-pointer' title={source.api}>
+                        <div
+                          className='truncate hover:whitespace-normal hover:break-all transition-all cursor-pointer'
+                          title={source.api}
+                        >
                           {source.api}
                         </div>
                       </div>
@@ -711,7 +718,9 @@ export default function SourceTestModule() {
                           </div>
                         )}
                         {result.status === 'error' && (
-                          <div className='text-sm text-red-600 font-medium'>请求失败</div>
+                          <div className='text-sm text-red-600 font-medium'>
+                            请求失败
+                          </div>
                         )}
                         {result.status === 'timeout' && (
                           <div className='text-sm text-yellow-600 font-medium'>
@@ -719,7 +728,9 @@ export default function SourceTestModule() {
                           </div>
                         )}
                         {result.status === 'testing' && (
-                          <div className='text-sm text-blue-500 font-medium'>测试中...</div>
+                          <div className='text-sm text-blue-500 font-medium'>
+                            测试中...
+                          </div>
                         )}
                         {result.topMatches && result.topMatches.length > 0 && (
                           <div
@@ -777,7 +788,8 @@ export default function SourceTestModule() {
                   <div className='mt-3 pt-3 border-t border-gray-200 dark:border-gray-700 md:hidden'>
                     <div className='flex items-center justify-between text-sm'>
                       <div className='text-gray-600 dark:text-gray-400'>
-                        {result.responseTime && `响应时间: ${result.responseTime}ms`}
+                        {result.responseTime &&
+                          `响应时间: ${result.responseTime}ms`}
                       </div>
                       {result.status === 'success' && (
                         <div className='text-green-600 font-medium'>
@@ -796,14 +808,21 @@ export default function SourceTestModule() {
                         <div className='text-red-600 font-medium'>请求失败</div>
                       )}
                       {result.status === 'timeout' && (
-                        <div className='text-yellow-600 font-medium'>请求超时</div>
+                        <div className='text-yellow-600 font-medium'>
+                          请求超时
+                        </div>
                       )}
                       {result.status === 'testing' && (
-                        <div className='text-blue-500 font-medium'>测试中...</div>
+                        <div className='text-blue-500 font-medium'>
+                          测试中...
+                        </div>
                       )}
                     </div>
                     {result.topMatches && result.topMatches.length > 0 && (
-                      <div className='text-xs text-gray-500 mt-1' title={result.topMatches.join(' | ')}>
+                      <div
+                        className='text-xs text-gray-500 mt-1'
+                        title={result.topMatches.join(' | ')}
+                      >
                         示例: {result.topMatches.slice(0, 2).join(', ')}
                       </div>
                     )}

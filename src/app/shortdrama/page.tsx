@@ -42,7 +42,7 @@ export default function ShortDramaPage() {
       });
       if (node) observer.current.observe(node);
     },
-    [loading, hasMore],
+    [loading, hasMore]
   );
 
   // 获取分类列表
@@ -119,7 +119,7 @@ export default function ShortDramaPage() {
         setLoading(false);
       }
     },
-    [selectedCategory, searchQuery, isSearchMode],
+    [selectedCategory, searchQuery, isSearchMode]
   );
 
   // 当分类变化时重新加载
@@ -155,7 +155,7 @@ export default function ShortDramaPage() {
         loadDramas(1, true);
       }
     },
-    [loadDramas],
+    [loadDramas]
   );
 
   // 返回顶部功能
