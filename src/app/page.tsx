@@ -36,6 +36,8 @@ import AIRecommendModal from '@/components/AIRecommendModal';
 import CapsuleSwitch from '@/components/CapsuleSwitch';
 import ContinueWatching from '@/components/ContinueWatching';
 import PageLayout from '@/components/PageLayout';
+import PlatformCard from '@/components/PlatformCard';
+import RankingCard from '@/components/RankingCard';
 import ScrollableRow from '@/components/ScrollableRow';
 import SectionTitle from '@/components/SectionTitle';
 import ShortDramaCard from '@/components/ShortDramaCard';
@@ -44,7 +46,9 @@ import SkeletonCard from '@/components/SkeletonCard';
 import VideoCard from '@/components/VideoCard';
 
 function HomeClient() {
-  const [activeTab, setActiveTab] = useState<'home' | 'favorites'>('home');
+  const [activeTab, setActiveTab] = useState<'home' | 'discover' | 'favorites'>(
+    'home'
+  );
   const [hotMovies, setHotMovies] = useState<DoubanItem[]>([]);
   const [hotTvShows, setHotTvShows] = useState<DoubanItem[]>([]);
   const [hotVarietyShows, setHotVarietyShows] = useState<DoubanItem[]>([]);
@@ -336,10 +340,13 @@ function HomeClient() {
           <CapsuleSwitch
             options={[
               { label: '首页', value: 'home' },
+              { label: '发现', value: 'discover' },
               { label: '收藏夹', value: 'favorites' },
             ]}
             active={activeTab}
-            onChange={(value) => setActiveTab(value as 'home' | 'favorites')}
+            onChange={(value) =>
+              setActiveTab(value as 'home' | 'discover' | 'favorites')
+            }
           />
 
           {/* AI推荐按钮 - 只在功能启用时显示，添加脉冲动画 */}
@@ -362,7 +369,93 @@ function HomeClient() {
         </div>
 
         <div className='max-w-[95%] mx-auto'>
-          {activeTab === 'favorites' ? (
+          {activeTab === 'discover' ? (
+            // 发现页面 - 全球榜单
+            <div className='explore-page'>
+              {/* 全球专区榜单 */}
+              <div className='ranking-area mb-12'>
+                <div className='ranking-section'>
+                  <div className='ranking-header mb-4'>
+                    <h1 className='text-2xl sm:text-3xl font-bold text-gray-800 dark:text-gray-200'>
+                      全球专区榜单
+                    </h1>
+                  </div>
+                  <div className='ranking-content'>
+                    <div className='flex gap-4 overflow-x-auto pb-3 scrollbar-thin scrollbar-thumb-gray-300 dark:scrollbar-thumb-gray-600 scrollbar-track-transparent'>
+                      {/* 示例数据 - 后续从API获取 */}
+                      <PlatformCard
+                        backgroundImage='https://via.placeholder.com/400x300/1a1a1a/ffffff?text=Netflix'
+                        topItems={[
+                          {
+                            title: '示例影片 1',
+                            poster:
+                              'https://via.placeholder.com/200x300/333/fff?text=1',
+                          },
+                          {
+                            title: '示例影片 2',
+                            poster:
+                              'https://via.placeholder.com/200x300/333/fff?text=2',
+                          },
+                          {
+                            title: '示例影片 3',
+                            poster:
+                              'https://via.placeholder.com/200x300/333/fff?text=3',
+                          },
+                        ]}
+                      />
+                      <div className='text-center flex items-center justify-center min-w-[340px] h-[300px] border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-[18px]'>
+                        <p className='text-gray-500 dark:text-gray-400'>
+                          数据加载中...
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* 全球热播榜单 */}
+              <div className='ranking-area'>
+                <div className='ranking-section'>
+                  <div className='ranking-header mb-4'>
+                    <h1 className='text-2xl sm:text-3xl font-bold text-gray-800 dark:text-gray-200'>
+                      全球热播榜单
+                    </h1>
+                  </div>
+                  <div className='ranking-content'>
+                    <div className='flex gap-4 overflow-x-auto pb-3 scrollbar-thin scrollbar-thumb-gray-300 dark:scrollbar-thumb-gray-600 scrollbar-track-transparent'>
+                      {/* 示例数据 - 后续从API获取 */}
+                      <RankingCard
+                        title='本周国剧排行榜'
+                        backgroundImage='https://via.placeholder.com/400x300/2a2a2a/ffffff?text=CN+Drama'
+                        topItems={[
+                          {
+                            title: '示例剧集 1',
+                            poster:
+                              'https://via.placeholder.com/200x300/444/fff?text=1',
+                          },
+                          {
+                            title: '示例剧集 2',
+                            poster:
+                              'https://via.placeholder.com/200x300/444/fff?text=2',
+                          },
+                          {
+                            title: '示例剧集 3',
+                            poster:
+                              'https://via.placeholder.com/200x300/444/fff?text=3',
+                          },
+                        ]}
+                      />
+                      <div className='text-center flex items-center justify-center min-w-[340px] min-h-[300px] border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-[18px]'>
+                        <p className='text-gray-500 dark:text-gray-400'>
+                          数据加载中...
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ) : activeTab === 'favorites' ? (
             // 收藏夹视图
             <section className='mb-8'>
               <div className='mb-4 flex items-center justify-between'>
